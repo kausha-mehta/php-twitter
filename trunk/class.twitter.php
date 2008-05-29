@@ -24,28 +24,24 @@ TODO:
 class twitter{
 	/**
 	 * Authenticating Twitter user
-	 * @access private
 	 * @var string
 	 */
 	var $username='';
 	
 	/**
 	 * Autenticating Twitter user password
-	 * @access private
 	 * @var string
 	 */
 	var $password='';
 
 	/**
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
-	 * @access private
 	 * @var string
 	 */
 	var $user_agent='';
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
-	 * @access private
 	 * @var string
 	 */
 	var $type='json';
@@ -53,13 +49,11 @@ class twitter{
 	/**
 	 * It is unclear if Twitter header preferences are standardized, but I would suggest using them.
 	 * More discussion at http://tinyurl.com/3xtx66
-	 * @access private
 	 * @var array
 	 */
 	var $headers=array('X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
 
 	/**
-	 * @access private
 	 * @var array
 	 */
 	var $responseInfo=array();
