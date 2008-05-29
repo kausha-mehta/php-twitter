@@ -53,7 +53,7 @@ class twitter{
 	 */
 	var $responseInfo=array();
     
-    function twitter()
+	function twitter()
 	{
 		// Nothing
 	}    
