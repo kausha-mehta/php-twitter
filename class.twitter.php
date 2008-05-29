@@ -69,42 +69,6 @@ class twitter{
 	{
 		// Nothing
 	}
-	
-	/**
-	 * Detects if Twitter is up or down. Chances are, it will be down. ;-) Here's a hint - display CPM ads whenever Twitter is down
-	 * @return boolean
-	 */
-	function twitterAvailable()
-	{
-		$request = 'http://twitter.com/help/test.' . $this->type;
-		if( $this->objectify( $this->process($request) ) == 'ok' )
-			return true;
-		
-		return false;
-	}
-
-	/**
-	 * Rate Limit API Call. Sometimes Twitter needs to degrade. Use this non-ratelimited API call to work your logic out
-	 * @return integer|boolean 
-	 */
-	function ratelimit()
-	{
-		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		$out = $this->process($request);
-		return $this->objectify( $this->process($request) );
-	}
-	
-	/**
-	 * Uses the http://is.gd API to produce a shortened URL. Pluggable by extending the twitter class
-	 * @param string $url The URL needing to be shortened
-	 * @return string
-	 */
-	function shorturl( $url )
-	{
-		// Using is.gd because it's good
-		$request = 'http://is.gd/api.php?longurl=' . $url;
-		return $this->process( $request );
-	}
 
 	/**
 	 * Send a status update to Twitter.
@@ -192,6 +156,63 @@ class twitter{
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
     }
+
+	/**
+	 * Checks to see if a friendship already exists
+	 * @param string|integer $user_a Required. The username or ID of a Twitter user
+	 * @param string|integer $user_b Required. The username or ID of a Twitter user
+	 * @return string
+	 */
+	function isFriend( $user_a, $user_b )
+	{
+		$qs = '?user_a=' . urlencode( $user_a ) . '&amp;' . urlencode( $user_b );
+		$request = 'http://twitter.com/friendships/exists.' . $this->type . $qs;
+		return $this->objectify( $this->process($request) );
+	}
+
+	/**
+	 * Follows a user
+	 * @param integer|string $id the username or ID of a person you want to follow
+	 * @return string
+	 */
+	function followUser( $id )
+	{
+		$request = 'http://twitter.com/friendships/create/' . $id . $this->type;
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Unfollows a user
+	 * @param integer|string $id the username or ID of a person you want to unfollow
+	 * @return string
+	 */
+	function leaveUser( $id )
+	{
+		$request = 'http://twitter.com/friendships/destroy/' . $id . $this->type;
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Blocks a user
+	 * @param integer|string $id the username or ID of a person you want to block
+	 * @return string
+	 */
+	function blockUser( $id )
+	{
+		$request = 'http://twitter.com/blocks/create/' . $id . $this->type;
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Unblocks a user
+	 * @param integer|string $id the username or ID of a person you want to unblock
+	 * @return string
+	 */
+	function unblockUser()
+	{
+		$request = 'http://twitter.com/blocks/destroy/' . $id . $this->type;
+		return $this->objectify( $this->process($request) );
+	}
 
 	/**
 	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
@@ -313,6 +334,41 @@ class twitter{
 		return $this->objectify( $this->process( $request ) );
 	}
 	
+	/**
+	 * Detects if Twitter is up or down. Chances are, it will be down. ;-) Here's a hint - display CPM ads whenever Twitter is down
+	 * @return boolean
+	 */
+	function twitterAvailable()
+	{
+		$request = 'http://twitter.com/help/test.' . $this->type;
+		if( $this->objectify( $this->process($request) ) == 'ok' )
+			return true;
+		
+		return false;
+	}
+
+	/**
+	 * Rate Limit API Call. Sometimes Twitter needs to degrade. Use this non-ratelimited API call to work your logic out
+	 * @return integer|boolean 
+	 */
+	function ratelimit()
+	{
+		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
+		$out = $this->process($request);
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Uses the http://is.gd API to produce a shortened URL. Pluggable by extending the twitter class
+	 * @param string $url The URL needing to be shortened
+	 * @return string
+	 */
+	function shorturl( $url )
+	{
+		// Using is.gd because it's good
+		$request = 'http://is.gd/api.php?longurl=' . $url;
+		return $this->process( $request );
+	}
 	
 	/**
 	 * PHP4 compatible XML parsing
