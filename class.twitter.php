@@ -11,13 +11,6 @@
  * @subpackage classes
  */
 
-/*
-TODO:
-	function createFavorite()
-	function getFavorites()
-	function destroyFavorite()
-*/
-
 class twitter{
 	/**
 	 * Authenticating Twitter user
@@ -147,6 +140,43 @@ class twitter{
 		return $this->objectify( $this->process($request) );
     }
 
+	/**
+	 * Retrieves favorited tweets
+	 * @param integer|string $id Required. The username or ID of the user to be fetched
+	 * @param integer $page Optional. Tweets are returned in 20 tweet blocks. This int refers to the page/block
+	 * @return string
+	 */
+	function getFavorites( $id, $page=false )
+	{
+		if( $page != false )
+			$qs = '?page=' . $page;
+		
+		$request = 'http://twitter.com/favorites.' . $this->type . $qs; 
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Favorites a tweet
+	 * @param integer $id Required. The ID number of a tweet to be added to the authenticated user favorites
+	 * @return string
+	 */
+	function makeFavorite( $id )
+	{
+		$request = 'http://twitter.com/favorites/create/' . $id . '.' . $this->type;
+		return $this->objectify( $this->process($request) );	
+	}
+	
+	/**
+	 * Unfavorites a tweet
+	 * @param integer $id Required. The ID number of a tweet to be removed to the authenticated user favorites
+	 * @return string
+	 */
+	function removeFavorite( $id )
+	{
+		$request = 'http://twitter.com/favorites/destroy/' . $id . '.' . $this->type;
+		return $this->objectify( $this->process($request) );	
+	}
+	
 	/**
 	 * Checks to see if a friendship already exists
 	 * @param string|integer $user_a Required. The username or ID of a Twitter user
