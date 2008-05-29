@@ -16,21 +16,21 @@ class twitter{
 	 * @access private
 	 * @var string
 	 */
-    var $username='';
+	var $username='';
 	
 	/**
 	 * Autenticating Twitter user password
 	 * @access private
 	 * @var string
 	 */
-    var $password='';
+	var $password='';
 
 	/**
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
 	 * @access private
 	 * @var string
 	 */
-    var $user_agent='';
+	var $user_agent='';
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
@@ -45,13 +45,13 @@ class twitter{
 	 * @access private
 	 * @var array
 	 */
-    var $headers=array('X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
+	var $headers=array('X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
 
 	/**
 	 * @access private
 	 * @var array
 	 */
-    var $responseInfo=array();
+	var $responseInfo=array();
     
     function twitter()
 	{
@@ -86,7 +86,7 @@ class twitter{
 	 * @param string $status total length of the status update must be 140 chars or less.
 	 * @return string|boolean
 	 */
-    function update($status)
+	function update($status)
 	{
         $request = 'http://twitter.com/statuses/update.' . $this->type;
 		//$status = $this->shorturl($status);
@@ -101,7 +101,7 @@ class twitter{
 	 * @param boolean|integer $sinceid Returns only public statuses with an ID greater of $sinceid
 	 * @return string
 	 */
-    function publicTimeline( $sinceid = false )
+	function publicTimeline( $sinceid = false )
 	{
         $qs='';
         if($sinceid!==false)
@@ -118,7 +118,7 @@ class twitter{
 	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
 	 * @return string
 	 */
-    function friendsTimeline( $id = false, $since = false )
+	function friendsTimeline( $id = false, $since = false )
 	{
         $qs='';
         if( $since !== false )
@@ -141,7 +141,7 @@ class twitter{
 	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
 	 * @return string
 	 */
-    function userTimeline($id=false,$count=20,$since=false)
+	function userTimeline($id=false,$count=20,$since=false)
 	{
         $qs='?count='.intval($count);
         if( $since !== false )
@@ -161,7 +161,7 @@ class twitter{
 	 * @param integer $id The id number of the tweet to be returned.
 	 * @return string
 	 */
-    function showStatus($id){
+	function showStatus($id){
         $request = 'http://twitter.com/statuses/show/'.intval($id).'.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
@@ -172,7 +172,7 @@ class twitter{
 	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
 	 * @return string
 	 */
-    function friends( $id = false )
+	function friends( $id = false )
 	{
         if( $id === false )
             $request = 'http://twitter.com/statuses/friends.' . $this->type;
@@ -186,7 +186,7 @@ class twitter{
 	 * Returns the authenticating user's followers, each with current status inline.
 	 * @return string
 	 */
-    function followers(){
+	function followers(){
         $request = 'http://twitter.com/statuses/followers.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
@@ -196,7 +196,7 @@ class twitter{
 	 * Returns a list of the users currently featured on the site with their current statuses inline.
 	 * @return string
 	 */
-    function featured()
+	function featured()
 	{
         $request = 'http://twitter.com/statuses/featured.' . $this->type;
         $out = $this->process($request);
@@ -211,7 +211,7 @@ class twitter{
 	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
 	 * @return string
 	 */
-    function showUser( $id )
+	function showUser( $id )
 	{
         $request = 'http://twitter.com/users/show/'.urlencode($id).'.' . $this->type;
         $out = $this->process($request);
@@ -223,7 +223,7 @@ class twitter{
 	 * @param string $since (HTTP-formatted date) Optional.  Narrows the resulting list of direct messages to just those sent after the specified date. 
 	 * @return string
 	 */
-    function directMessages( $since = false )
+	function directMessages( $since = false )
 	{
         $qs='';
         if( $since !== false )
@@ -240,7 +240,7 @@ class twitter{
 	 * @param string $user The text of your direct message.  Be sure to URL encode as necessary, and keep it under 140 characters.  
 	 * @return string
 	 */
-    function sendDirectMessage( $user, $text )
+	function sendDirectMessage( $user, $text )
 	{
         $request = 'http://twitter.com/direct_messages/new.' . $this->type;
         $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
@@ -283,7 +283,7 @@ class twitter{
 	 * @param string $url Required. API URL to request
 	 * @param string $postargs Optional. Urlencoded query string to append to the $url
 	 */
-    function process($url,$postargs=false)
+	function process($url,$postargs=false)
 	{
 		$ch = curl_init($url);
 		if($postargs !== false)
