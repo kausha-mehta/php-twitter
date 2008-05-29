@@ -56,7 +56,19 @@ class twitter{
 	function twitter()
 	{
 		// Nothing
-	}    
+	}
+	
+	/**
+	 * Detects if Twitter is up or down. Chances are, it will be down. ;-) Here's a hint - display CPM ads whenever Twitter is down
+	 * @return boolean
+	 */
+	function twitterAvailable()
+	{
+		if( !$this->publicTimeline() )
+			return false;
+			
+		return true;
+	}
 
 	/**
 	 * Rate Limit API Call. Sometimes Twitter needs to degrade. Use this non-ratelimited API call to work your logic out
@@ -104,8 +116,8 @@ class twitter{
 	function publicTimeline( $sinceid = false )
 	{
         $qs='';
-        if($sinceid!==false)
-            $qs='?since_id='.intval($sinceid);
+        if( $sinceid !== false )
+            $qs = '?since_id=' . intval($sinceid);
         $request = 'http://twitter.com/statuses/public_timeline.' . $this->type . $qs;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
