@@ -93,7 +93,7 @@ class twitter{
         $postargs = 'status='.urlencode($status);
         $out = $this->process($request,$postargs);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Send an unauthenticated request to Twitter for the public timeline. 
@@ -109,7 +109,7 @@ class twitter{
         $request = 'http://twitter.com/statuses/public_timeline.' . $this->type . $qs;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
@@ -131,7 +131,7 @@ class twitter{
         
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating user. 
@@ -154,15 +154,16 @@ class twitter{
         
        	$out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Returns a single status, specified by the id parameter below.  The status's author will be returned inline.
 	 * @param integer $id The id number of the tweet to be returned.
 	 * @return string
 	 */
-	function showStatus($id){
-        $request = 'http://twitter.com/statuses/show/'.intval($id).'.' . $this->type;
+	function showStatus( $id )
+	{
+        $request = 'http://twitter.com/statuses/show/'.intval($id) . '.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
     }
@@ -180,17 +181,18 @@ class twitter{
             $request = 'http://twitter.com/statuses/friends/' . urlencode($id) . '.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Returns the authenticating user's followers, each with current status inline.
 	 * @return string
 	 */
-	function followers(){
+	function followers()
+	{
         $request = 'http://twitter.com/statuses/followers.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Returns a list of the users currently featured on the site with their current statuses inline.
@@ -201,7 +203,7 @@ class twitter{
         $request = 'http://twitter.com/statuses/featured.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 
 	/**
@@ -216,7 +218,7 @@ class twitter{
         $request = 'http://twitter.com/users/show/'.urlencode($id).'.' . $this->type;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Returns a list of the direct messages sent to the authenticating user.	 
@@ -231,7 +233,7 @@ class twitter{
         $request = 'http://twitter.com/direct_messages.' . $this->type .$qs;
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
-    }
+	}
     
 	/**
 	 * Sends a new direct message to the specified user from the authenticating user.  Requires both the user
@@ -246,7 +248,7 @@ class twitter{
         $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
         $out = $this->process( $request, $postargs );
 		return $this->objectify( $this->process($request) );
-    }
+	}
 
 	/**
 	 * Sends a request to follow a user specified by ID
@@ -312,7 +314,7 @@ class twitter{
 			return $response;    
         else
             return false;
-    }
+	}
 
 	/**
 	 * Function to prepare data for return to client
