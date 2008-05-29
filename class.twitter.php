@@ -5,6 +5,7 @@
  * Wrapper class around the Twitter API for PHP
  * @author David Billingham <david@slawcup.com>
  * @author Aaron Brazell <aaron@technosailor.com>
+ * @author Keith Casey <caseysoftware@gmail.com>
  * @version 1.0-beta
  * @package php-twitter
  * @subpackage classes
