@@ -277,10 +277,10 @@ class twitter{
 		echo'</pre>';
 	}
 	
-    /**
-     * Internal function where all the juicy curl fun takes place
-     * this should not be called by anything external unless you are
-     * doing something else completely then knock youself out.
+	/**
+	 * Internal function where all the juicy curl fun takes place
+	 * this should not be called by anything external unless you are
+	 * doing something else completely then knock youself out.
 	 * @access private
 	 * @param string $url Required. API URL to request
 	 * @param string $postargs Optional. Urlencoded query string to append to the $url
