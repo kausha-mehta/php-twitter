@@ -286,6 +286,21 @@ class twitter{
 	}
 	
 	/**
+	 * Updates delivery device
+	 * @param string $device Required. Must be of type 'im', 'sms' or 'none'
+	 * @return string
+	 */
+	function updateDevice( $device )
+	{
+		if( !in_array( $device, array('im','sms','none') ) )
+			return false;
+			
+		$qs = '?device=' . $device;
+		$request = 'http://twitter.com/account/update_delivery_device.' . $this->type . $qs;
+		return $this->objectify( $this->process( $request ) );
+	}
+	
+	/**
 	 * PHP4 compatible XML parsing
 	 * NEEDS FIXING - UNUSED
 	 */
