@@ -3,6 +3,8 @@
  * TwitterPHP 
  * 
  * Wrapper class around the Twitter API for PHP
+ * Based on the class originally developed by David Billingham
+ * and accessible at http://twitter.slawcup.com/twitter.class.phps
  * @author David Billingham <david@slawcup.com>
  * @author Aaron Brazell <aaron@technosailor.com>
  * @author Keith Casey <caseysoftware@gmail.com>
