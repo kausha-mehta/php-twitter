@@ -5,7 +5,7 @@
  * Wrapper class around the Twitter API for PHP
  * @author David Billingham <david@slawcup.com>
  * @author Aaron Brazell <aaron@technosailor.com>
- * @version 0.5 beta
+ * @version 1.0-beta
  * @package twitterphp
  * @subpackage classes
  */
@@ -271,6 +271,18 @@ class twitter{
 	{
 		$request = 'http://twitter.com/friendships/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
+	 * Updates Geo location
+	 * @param string $location Required. Must be urlencoded. Example (San%20Francisco)
+	 * @return string
+	 */
+	function updateLocation( $location )
+	{
+		$qs = '?location=' . urlencode($location);
+		$request = 'http://twitter.com/account/update_location.' . $this->type . $qs;
+		return $this->objectify( $this->process( $request ) );
 	}
 	
 	/**
