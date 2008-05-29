@@ -10,6 +10,18 @@
  * @subpackage classes
  */
 
+/*
+TODO:
+	function createFavorite()
+	function getFavorites()
+	function destroyFavorite()
+	function followUser()
+	function leaveUser()
+	function blockUser()
+	function unblockUser()
+	function downtimeSchedule()
+*/
+
 class twitter{
 	/**
 	 * Authenticating Twitter user
@@ -64,10 +76,11 @@ class twitter{
 	 */
 	function twitterAvailable()
 	{
-		if( !$this->publicTimeline() )
-			return false;
-			
-		return true;
+		$request = 'http://twitter.com/help/test.' . $this->type;
+		if( $this->objectify( $this->process($request) ) == 'ok' )
+			return true;
+		
+		return false;
 	}
 
 	/**
@@ -299,6 +312,7 @@ class twitter{
 		$request = 'http://twitter.com/account/update_delivery_device.' . $this->type . $qs;
 		return $this->objectify( $this->process( $request ) );
 	}
+	
 	
 	/**
 	 * PHP4 compatible XML parsing
