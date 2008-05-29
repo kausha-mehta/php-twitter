@@ -6,7 +6,7 @@
  * @author David Billingham <david@slawcup.com>
  * @author Aaron Brazell <aaron@technosailor.com>
  * @version 1.0-beta
- * @package twitterphp
+ * @package php-twitter
  * @subpackage classes
  */
 
@@ -15,10 +15,6 @@ TODO:
 	function createFavorite()
 	function getFavorites()
 	function destroyFavorite()
-	function followUser()
-	function leaveUser()
-	function blockUser()
-	function unblockUser()
 	function downtimeSchedule()
 */
 
