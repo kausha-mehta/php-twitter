@@ -1,7 +1,5 @@
 <?php
 /**
- * TwitterPHP 
- * 
  * Wrapper class around the Twitter API for PHP
  * Based on the class originally developed by David Billingham
  * and accessible at http://twitter.slawcup.com/twitter.class.phps
@@ -18,7 +16,6 @@ TODO:
 	function createFavorite()
 	function getFavorites()
 	function destroyFavorite()
-	function downtimeSchedule()
 */
 
 class twitter{
@@ -338,6 +335,16 @@ class twitter{
 			return true;
 		
 		return false;
+	}
+	
+	/**
+	 * Any prescheduled maintenance?
+	 * @return string
+	 */
+	function maintenanceSchedule()
+	{
+		$request = 'http://twitter.com/help/downtime_schedule.' . $this->type;
+		return $this->objectify( $this->process( $request ) );
 	}
 
 	/**
