@@ -1,0 +1,17 @@
+#Example Code
+
+= Check to see if Twitter is available=
+
+`$t = new twitter();
+$t->username='myuser';		
+$t->password='mypass';
+echo'<pre>';
+print_r( $t->ratelimit() );
+echo'</pre>';`
+
+*Returns*
+
+`stdClass Object
+(
+    [remaining_hits] => 30
+)`
