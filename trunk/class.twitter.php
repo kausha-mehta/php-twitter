@@ -92,17 +92,16 @@ class twitter{
 	 */
 	function friendsTimeline( $id = false, $since = false )
 	{
-        $qs='';
-        if( $since !== false )
-            $qs='?since='.urlencode($since);
-            
-        if( $id === false )
-            $request = 'http://twitter.com/statuses/friends_timeline.' . $this->type . $qs;
-        else
-            $request = 'http://twitter.com/statuses/friends_timeline/' . urlencode($id) . '.' . $this->type . $qs;
-        
-        $out = $this->process($request);
-		return $this->objectify( $this->process($request) );
+		/* Note: Twitter has deprecated this function as of May 30, 2008. */
+		/*
+			We'll be deprecating the usage of this method that,
+			apparently, hardly anyone but us uses.  Most likely, the deploy that
+			deprecates this will go out tomorrow, and the documentation will be
+			updated at that time.  URLs that specify an alternate user for whom to
+			fetch a friends_timeline will continue to work, but will return
+			statuses for the authenticating user.
+		*/
+		return $this->userTimeline( $id, 20, $since );
 	}
     
 	/**
