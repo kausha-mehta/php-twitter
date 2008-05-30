@@ -86,6 +86,7 @@ class twitter{
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
 	 * Returns the last 20 updates by default
+	 * @deprecated true
 	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
 	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
 	 * @return string
