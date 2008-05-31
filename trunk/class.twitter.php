@@ -189,15 +189,15 @@ class twitter{
 		$request = 'http://twitter.com/friendships/exists.' . $this->type . $qs;
 		return $this->objectify( $this->process($request) );
 	}
-
+	
 	/**
-	 * Follows a user
-	 * @param integer|string $id the username or ID of a person you want to follow
+	 * Sends a request to follow a user specified by ID
+	 * @param integer|string $id The twitter ID or screenname of the user to follow
 	 * @return string
 	 */
 	function followUser( $id )
 	{
-		$request = 'http://twitter.com/friendships/create/' . $id . $this->type;
+		$request = 'http://twitter.com/friendships/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
 	
@@ -313,17 +313,6 @@ class twitter{
         $request = 'http://twitter.com/direct_messages/new.' . $this->type;
         $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
         $out = $this->process( $request, $postargs );
-		return $this->objectify( $this->process($request) );
-	}
-
-	/**
-	 * Sends a request to follow a user specified by ID
-	 * @param integer|string $id The twitter ID or screenname of the user to follow
-	 * @return string
-	 */
-	function followUser( $id )
-	{
-		$request = 'http://twitter.com/friendships/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
 	
