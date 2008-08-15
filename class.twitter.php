@@ -397,6 +397,16 @@ class twitter{
 	}
 	
 	/**
+	 * Rate Limit statuses (extended). Provides helper data like remaining-hits, hourly limit, reset time and reset time in seconds
+	*/
+	function ratelimit_status()
+	{
+		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
+		$out = $this->process($request);
+		return $this->objectify( $this->process($request) );
+	}
+	
+	/**
 	 * Uses the http://is.gd API to produce a shortened URL. Pluggable by extending the twitter class
 	 * @param string $url The URL needing to be shortened
 	 * @return string
