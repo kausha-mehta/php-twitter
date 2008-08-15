@@ -120,7 +120,9 @@ class twitter{
             $qs[] = 'since='.urlencode($since);
 		
 		if ( $count == 20 )
-			$qs[] = 'count='.intval($count);
+			$qs[] = 'page='.intval($count);
+		else
+			$qs[] = 'count=' . intval( $count );
 			
         $qs = ( count($qs) > 0 ) ? '?' . implode('&', $qs) : '';
             
