@@ -393,7 +393,7 @@ class twitter{
 	{
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
 		$out = $this->process($request);
-		return $this->objectify( $this->process($request) );
+		return $this->objectify( $out );
 	}
 	
 	/**
@@ -403,7 +403,7 @@ class twitter{
 	{
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
 		$out = $this->process($request);
-		return $this->objectify( $this->process($request) );
+		return $this->objectify( $out );
 	}
 	
 	/**
@@ -504,6 +504,42 @@ class twitter{
 		}
 		else
 			return false;
+	}
+}
+
+/**
+ * Wrapper class around the Twitter API for PHP
+ * Based on the class originally developed by David Billingham
+ * and accessible at http://twitter.slawcup.com/twitter.class.phps
+ * @author Aaron Brazell <aaron@technosailor.com>
+ * @author Keith Casey <caseysoftware@gmail.com>
+ * @version 1.1-alpha
+ * @package php-twitter
+ * @subpackage classes
+ */
+
+class summize extends twitter
+{
+	/**
+	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or Atom - json|atom
+	 * @var string
+	 */
+	var $stype='json';	
+	
+	function search( $terms=false, $callback=false )
+	{
+		if( !$terms )
+			return false;
+		
+		$qs = array();
+		$request = 'http://search.twitter.com/search.' . $this->stype;
+		
+		$qs[] = 'q=' . urlencode( $terms );
+		if( $callback && $this->stype == 'json' )
+			$qs[] = 'callback=' . $callback;
+			
+		$out = $this->process($request . '?' . implode('&',$qs));
+		return $this->objectify( $out );
 	}
 }
 
