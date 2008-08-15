@@ -6,7 +6,7 @@
  * @author David Billingham <david@slawcup.com>
  * @author Aaron Brazell <aaron@technosailor.com>
  * @author Keith Casey <caseysoftware@gmail.com>
- * @version 1.0-beta
+ * @version 1.1-alpha
  * @package php-twitter
  * @subpackage classes
  */
