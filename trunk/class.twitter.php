@@ -115,9 +115,14 @@ class twitter{
 	 */
 	function userTimeline($id=false,$count=20,$since=false)
 	{
-        $qs='?count='.intval($count);
+		$qs = array();
         if( $since !== false )
-            $qs .= '&since='.urlencode($since);
+            $qs[] = 'since='.urlencode($since);
+		
+		if ( $count == 20 )
+			$qs[] = 'count='.intval($count);
+			
+        $qs = ( count($qs) > 0 ) ? '?' . implode('&', $qs) : '';
             
         if( $id === false )
             $request = 'http://twitter.com/statuses/user_timeline.' . $this->type . $qs;
