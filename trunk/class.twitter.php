@@ -104,7 +104,7 @@ class twitter{
 		*/
 		return $this->userTimeline( $id, 20, $since );
 	}
-    
+	    
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating user. 
 	 * Returns the last 20 updates by default
@@ -113,11 +113,23 @@ class twitter{
 	 * @deprecated integer $count. As of July 7 2008, Twitter has requested the limitation of the count keyword. Therefore, we deprecate
 	 * @return string
 	 */
-	function userTimeline($id=false,$count=20,$since=false)
+	function userTimeline($id=false,$count=20,$since=false,$since_id=false,$page=false)
 	{
 		$qs = array();
         if( $since !== false )
             $qs[] = 'since='.urlencode($since);
+		
+		if( $since_id )
+		{
+			$since_id = (int) $since_id;
+			$qs[] = 'since_id=' . $since_id;
+		}
+
+		if( $page )
+		{
+			$page = (int) $page;
+			$qs[] = 'page=' . $page;
+		}
 		
 		if ( $count == 20 )
 			$qs[] = 'page='.intval($count);
