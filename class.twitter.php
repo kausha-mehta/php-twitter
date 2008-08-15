@@ -109,8 +109,8 @@ class twitter{
 	 * Send an authenticated request to Twitter for the timeline of authenticating user. 
 	 * Returns the last 20 updates by default
 	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
-	 * @param integer $count Number of updates to include in the returned results.
 	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
+	 * @deprecated integer $count. As of July 7 2008, Twitter has requested the limitation of the count keyword. Therefore, we deprecate
 	 * @return string
 	 */
 	function userTimeline($id=false,$count=20,$since=false)
