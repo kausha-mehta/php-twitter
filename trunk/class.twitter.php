@@ -508,9 +508,7 @@ class twitter{
 }
 
 /**
- * Wrapper class around the Twitter API for PHP
- * Based on the class originally developed by David Billingham
- * and accessible at http://twitter.slawcup.com/twitter.class.phps
+ * Wrapper class around the Twitter Search (formerly, and affectionately known as Summize)
  * @author Aaron Brazell <aaron@technosailor.com>
  * @author Keith Casey <caseysoftware@gmail.com>
  * @version 1.1-alpha
