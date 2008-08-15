@@ -410,7 +410,8 @@ class twitter{
 	
 	/**
 	 * PHP4 compatible XML parsing
-	 * NEEDS FIXING - UNUSED
+	 * PHP4 has reached EOL. Support not provided.
+	 * @deprecated true
 	 */
 	function php4_parse_xml( $data )
 	{
