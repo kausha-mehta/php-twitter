@@ -41,7 +41,7 @@ class twitter{
 	 * More discussion at http://tinyurl.com/3xtx66
 	 * @var array
 	 */
-	var $headers=array('X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
+	var $headers=array('Expect:', 'X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
 
 	/**
 	 * @var array
