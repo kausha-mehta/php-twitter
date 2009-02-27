@@ -370,6 +370,19 @@ class twitter{
 		return $this->objectify( $this->process( $request ) );
 	}
 	
+	function updateColors( $colors = array() )
+	{
+	    $postdata = array();
+	    foreach( $colors as $ck => $cv ) :
+	        if( preg_match('/^(?:(?:[a-f\d]{3}){1,2})$/i', $hex) ) :
+                $postdata[$ck] = (string) $cv;
+            endif;
+	    endforeach;
+	    
+		$request = 'http://twitter.com/account/update_profile_colors.' . $this->type;
+	    return $this->objectify( $this->process( $request, $postdata ) );
+	}
+	
 	/**
 	 * Detects if Twitter is up or down. Chances are, it will be down. ;-) Here's a hint - display CPM ads whenever Twitter is down
 	 * @return boolean
