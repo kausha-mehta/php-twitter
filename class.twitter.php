@@ -422,23 +422,6 @@ class twitter{
 	}
 	
 	/**
-	 * PHP4 compatible XML parsing
-	 * PHP4 has reached EOL. Support not provided.
-	 * @deprecated true
-	 */
-	function php4_parse_xml( $data )
-	{
-		$parser = xml_parser_create('UTF-8');
-		xml_parser_set_option($parser, XML_OPTION_SKIP_WHITE, 1); 
-		xml_parse_into_struct($parser, $data, $vals, $index); 
-		xml_parser_free($parser);
-		echo'<pre>';
-		print_r($vals);
-		print_r($index);
-		echo'</pre>';
-	}
-	
-	/**
 	 * Internal function where all the juicy curl fun takes place
 	 * this should not be called by anything external unless you are
 	 * doing something else completely then knock youself out.
