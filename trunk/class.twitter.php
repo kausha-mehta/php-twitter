@@ -300,12 +300,24 @@ class twitter{
 	 * Returns extended information of a given user, specified by ID or screen name as per the required
 	 * id parameter below.  This information includes design settings, so third party developers can theme
 	 * their widgets according to a given user's preferences.	 
-	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
+	 * @param integer $id Optional. The user ID.
+	 * @param string $email Optional. The email address of the user being requested (can use in place of $id)
+	 * @param integer $user_id Optional. The user ID (can use in place of $id)
+	 * @param string $screen_name Optional. The screen name of the user being requested (can use in place of $id)
 	 * @return string
 	 */
-	function showUser( $id )
+	function showUser( $id, $email = false, $user_id = false, $screen_name=false )
 	{
-        $request = 'http://twitter.com/users/show/'.urlencode($id).'.' . $this->type;
+	    if( $user_id ) :
+	        $qs = '?user_id=' . (int) $user_id;
+	    elseif ( $screen_name ) :
+	        $qs = '?screen_name=' . (string) $screen_name;
+	    elseif ( $email ) :
+	        $qs = '?email=' . (string) $email;
+	    else :
+	        $qs = (int) $id;
+        $request = 'http://twitter.com/users/show/' . $qs . $this->type;
+        
         $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
 	}
