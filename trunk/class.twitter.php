@@ -47,6 +47,11 @@ class twitter{
 	 * @var array
 	 */
 	var $responseInfo=array();
+	
+	/**
+	 * @var boolean
+	 */
+	 var $suppress_response_code = false;
     
 	function twitter()
 	{
@@ -431,6 +436,7 @@ class twitter{
 	 */
 	function process($url,$postargs=false)
 	{
+	    $url = ( $this->suppress_response_code ) ? $url . '&suppress_response_code=true' : $url;
 		$ch = curl_init($url);
 		if($postargs !== false)
 		{
