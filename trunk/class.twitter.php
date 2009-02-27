@@ -394,6 +394,40 @@ class twitter{
 	    return $this->objectify( $this->process( $request, $postdata ) );
 	}
 	
+	/**
+	 * @param array Requires. Pass an array of all optional members: name, email, url, location, or description. Email address must be valid if passed. Refer to Twitter RESTful API instructions on length allowed for other members
+	 * @return string
+	 */
+	function updateProfile( $fields = array() )
+	{
+	    $postdata = array();
+	    foreach( $fields as $pk => $pv ) :
+	        switch( $pk ) 
+	        {
+	            case 'name' :
+	                $postdata[$pk] = (string) substr( $pv, 0, 20 );
+	                break;
+	            case 'email' :
+	                if( preg_match( '/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i', $pv ) )
+	                    $postdata[$pk] = (string) $pv;
+	                break;
+	            case 'url' :
+	                $postdata[$pk] = (string) substr( $pv, 0, 100 );
+	                break;
+	            case 'location' :
+	                $postdata[$pk] = (string) substr( $pv, 0, 30 );
+	                break;
+	            case 'description' :
+	                $postdata[$pk] = (string) substr( $pv, 0, 160 );
+	                break;
+	            default :
+	                break;
+	        }
+	    endforeach;
+	    
+	    $request = 'http://twitter.com/account/update_profile.' . $this->type;
+	    return $this->objectify( $this->process( $request, $postdata ) );
+	}
 	
 	/**
 	 * Pass an array of values to Twitter to update Twitter profile colors
