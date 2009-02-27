@@ -370,6 +370,11 @@ class twitter{
 		return $this->objectify( $this->process( $request ) );
 	}
 	
+	/**
+	 * Pass an array of values to Twitter to update Twitter profile colors
+	 * @param array Required. All array members are optional. Optional color fields are: profile_background_color, profile_text_color, profile_link_color, profile_sidebar_fill_color, profile_sidebar_border_color
+	 * @return string
+	 */
 	function updateColors( $colors = array() )
 	{
 	    $postdata = array();
