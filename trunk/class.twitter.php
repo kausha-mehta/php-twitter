@@ -371,6 +371,18 @@ class twitter{
 	}
 	
 	/**
+	 * @param binary Required. Use your script to pass a binary image (GIF, JPG, PNG <700kb) to update Twitter profile avatar
+	 * @return string
+	 */
+	function updateAvatar( $file )
+	{
+	    // Adding @ ensures the POST will be raw multipart data encoded. This MUST be a file, not a URL. Handle it outside of the class.
+	    $postdata = array( 'image' => "@$file");
+	    $request = 'http://twitter.com/account/update_profile_image.' . $this->type;
+	    return $this->objectify( $this->process( $request, $postdata ) );
+	}
+	
+	/**
 	 * Pass an array of values to Twitter to update Twitter profile colors
 	 * @param array Required. All array members are optional. Optional color fields are: profile_background_color, profile_text_color, profile_link_color, profile_sidebar_fill_color, profile_sidebar_border_color
 	 * @return string
