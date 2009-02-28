@@ -631,7 +631,7 @@ class twitter{
         }
         
 		if($this->username !== false && $this->password !== false)
-			curl_setopt($ch, CURLOPT_USERPWD, base64_encode( $this->username.':'.$this->password ) );
+			curl_setopt($ch, CURLOPT_USERPWD, $this->username.':'.$this->password );
         
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
