@@ -289,12 +289,29 @@ class twitter{
 	 * @param integer $id Required. User ID to request list of friend IDs for
 	 * return string
 	 */
-	function socialGraphFollowing( $id )
+	function socialGraphFollowing( $id = false)
 	{
-	    $request = 'http://twitter.com/friends/' . (int) $id . '.' . $this->type;
+	    $request = 'http://twitter.com/friends/ids';
+	    if( $id )
+	        $request .= '/' . (int) $id . '.' . $this->type;
+	        
 	    return $this->objectify( $this->process($request) );
 	}
 
+	/**
+	 * Returns a list of IDs of all followers for the specified user
+	 * @param integer $id Required. User ID to request list of friend IDs for
+	 * return string
+	 */
+	function socialGraphFollowedBy( $id )
+	{
+	    $request = 'http://twitter.com/followers/ids';
+	    if( $id )
+	        $request .= '/' . (int) $id . '.' . $this->type;
+	        
+	    return $this->objectify( $this->process($request) );
+	}
+	
 	/**
 	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
 	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
