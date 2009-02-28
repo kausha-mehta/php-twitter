@@ -289,7 +289,7 @@ class twitter{
 	 * @param integer $id Required. User ID to request list of friend IDs for
 	 * return string
 	 */
-	function socialGraph( $id )
+	function socialGraphFollowing( $id )
 	{
 	    $request = 'http://twitter.com/friends/' . (int) $id . '.' . $this->type;
 	    return $this->objectify( $this->process($request) );
