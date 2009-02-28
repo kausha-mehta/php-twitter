@@ -379,6 +379,8 @@ class twitter{
 	        $qs = '?email=' . (string) $email;
 	    else :
 	        $qs = (int) $id;
+	    endif;
+	    
         $request = 'http://twitter.com/users/show/' . $qs . $this->type;
         
 		return $this->objectify( $this->process($request) );
