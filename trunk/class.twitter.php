@@ -87,7 +87,7 @@ class twitter{
 	    if( $page )
 	        $qs .= 'page=' . (int) $page;
 	    if( $since )
-	        $qs .= urlencode( $since );
+	        $qs .= rawurlencode( $since );
 	    if( $since_id )
 	        $qs .= (int) $since_id;
 	        
@@ -147,7 +147,7 @@ class twitter{
 	{
 		$qs = array();
         if( $since !== false )
-            $qs[] = 'since='.urlencode($since);
+            $qs[] = 'since='.rawurlencode($since);
 		
 		if( $since_id ) :
 			$since_id = (int) $since_id;
@@ -168,7 +168,7 @@ class twitter{
         if( $id === false )
             $request = 'http://twitter.com/statuses/user_timeline.' . $this->type . $qs;
         else
-            $request = 'http://twitter.com/statuses/user_timeline/' . urlencode($id) . '.' . $this->type . $qs;
+            $request = 'http://twitter.com/statuses/user_timeline/' . rawurlencode($id) . '.' . $this->type . $qs;
         
 		return $this->objectify( $this->process($request) );
 	}
@@ -229,7 +229,7 @@ class twitter{
 	 */
 	function isFriend( $user_a, $user_b )
 	{
-		$qs = '?user_a=' . urlencode( $user_a ) . '&amp;' . urlencode( $user_b );
+		$qs = '?user_a=' . rawurlencode( $user_a ) . '&amp;' . rawurlencode( $user_b );
 		$request = 'http://twitter.com/friendships/exists.' . $this->type . $qs;
 		return $this->objectify( $this->process($request) );
 	}
@@ -322,7 +322,7 @@ class twitter{
 	        if( is_int( $id ) )
 	            $qs .= (int) $id;
 	        else
-	            $qs .= (string) urlencode( $id );
+	            $qs .= (string) rawurlencode( $id );
 	    endif;
 	    
 	    $qs .= '.' . $this->type;
@@ -400,7 +400,7 @@ class twitter{
         $qs='?';
         $qsparams = array();
         if( $since !== false )
-            $qsparams['since'] = urlencode($since);
+            $qsparams['since'] = rawurlencode($since);
         if( $since_id )
             $qsparams['since_id'] = (int) $since_id;
         if( $page )
@@ -424,7 +424,7 @@ class twitter{
 	    $qs = '?';
 	    $qsparams = array();
 	    if( $since !== false )
-            $qsparams['since'] = urlencode($since);
+            $qsparams['since'] = rawurlencode($since);
         if( $since_id )
             $qsparams['since_id'] = (int) $since_id;
         if( $page )
@@ -444,7 +444,7 @@ class twitter{
 	function sendDirectMessage( $user, $text )
 	{
         $request = 'http://twitter.com/direct_messages/new.' . $this->type;
-        $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
+        $postargs = 'user=' . rawurlencode($user) . '&text=' . rawurlencode($text);
 
 		return $this->objectify( $this->process($request, $postargs) );
 	}
@@ -457,12 +457,12 @@ class twitter{
 	
 	/**
 	 * Updates Geo location
-	 * @param string $location Required. Must be urlencoded. Example (San%20Francisco)
+	 * @param string $location Required. Must be rawurlencoded. Example (San%20Francisco)
 	 * @return string
 	 */
 	function updateLocation( $location )
 	{
-		$qs = '?location=' . urlencode($location);
+		$qs = '?location=' . rawrawurlencode($location);
 		$request = 'http://twitter.com/account/update_location.' . $this->type . $qs;
 		return $this->objectify( $this->process( $request ) );
 	}
@@ -711,7 +711,7 @@ class summize extends twitter
 		$qs = array();
 		$request = 'http://search.twitter.com/search.' . $this->stype;
 		
-		$qs[] = 'q=' . urlencode( $terms );
+		$qs[] = 'q=' . rawurlencode( $terms );
 		if( $callback && $this->stype == 'json' )
 			$qs[] = 'callback=' . $callback;
 			
