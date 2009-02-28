@@ -415,8 +415,8 @@ class twitter{
 	{
         $request = 'http://twitter.com/direct_messages/new.' . $this->type;
         $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
-        $out = $this->process( $request, $postargs );
-		return $this->objectify( $this->process($request) );
+
+		return $this->objectify( $this->process($request, $postargs) );
 	}
 	
 	/**
