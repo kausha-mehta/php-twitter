@@ -96,18 +96,9 @@ class twitter{
 	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
 	 * @return string
 	 */
-	function friendsTimeline( $id = false, $since = false )
+	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
 	{
-		/* Note: Twitter has deprecated this function as of May 30, 2008. */
-		/*
-			We'll be deprecating the usage of this method that,
-			apparently, hardly anyone but us uses.  Most likely, the deploy that
-			deprecates this will go out tomorrow, and the documentation will be
-			updated at that time.  URLs that specify an alternate user for whom to
-			fetch a friends_timeline will continue to work, but will return
-			statuses for the authenticating user.
-		*/
-		return $this->userTimeline( $id, 20, $since );
+		return $this->userTimeline( $id, $count, $since, $since_id, $page );
 	}
 	    
 	/**
