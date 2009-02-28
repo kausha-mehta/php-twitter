@@ -462,7 +462,7 @@ class twitter{
 	 */
 	function updateLocation( $location )
 	{
-		$qs = '?location=' . rawrawurlencode($location);
+		$qs = '?location=' . rawurlencode($location);
 		$request = 'http://twitter.com/account/update_location.' . $this->type . $qs;
 		return $this->objectify( $this->process( $request ) );
 	}
