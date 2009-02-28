@@ -118,7 +118,7 @@ class twitter{
         if( $sinceid !== false )
             $qs = '?since_id=' . intval($sinceid);
         $request = 'http://twitter.com/statuses/public_timeline.' . $this->type . $qs;
-        $out = $this->process($request);
+
 		return $this->objectify( $this->process($request) );
 	}
     
@@ -170,7 +170,6 @@ class twitter{
         else
             $request = 'http://twitter.com/statuses/user_timeline/' . urlencode($id) . '.' . $this->type . $qs;
         
-       	$out = $this->process($request);
 		return $this->objectify( $this->process($request) );
 	}
     
@@ -182,7 +181,6 @@ class twitter{
 	function showStatus( $id )
 	{
         $request = 'http://twitter.com/statuses/show/'.intval($id) . '.' . $this->type;
-        $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
     }
 
@@ -357,7 +355,6 @@ class twitter{
 	function featured()
 	{
         $request = 'http://twitter.com/statuses/featured.' . $this->type;
-        $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
 	}
     
@@ -384,7 +381,6 @@ class twitter{
 	        $qs = (int) $id;
         $request = 'http://twitter.com/users/show/' . $qs . $this->type;
         
-        $out = $this->process($request);
 		return $this->objectify( $this->process($request) );
 	}
     
@@ -591,7 +587,6 @@ class twitter{
 	function ratelimit()
 	{
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		$out = $this->process($request);
 		return $this->objectify( $out );
 	}
 	
@@ -601,8 +596,7 @@ class twitter{
 	function ratelimit_status()
 	{
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		$out = $this->process($request);
-		return $this->objectify( $out );
+		return $this->objectify( $this->process($request) );
 	}
 	
 	/**
@@ -719,8 +713,7 @@ class summize extends twitter
 		if( $callback && $this->stype == 'json' )
 			$qs[] = 'callback=' . $callback;
 			
-		$out = $this->process($request . '?' . implode('&',$qs));
-		return $this->objectify( $out );
+		return $this->objectify( $this->process($request . '?' . implode('&',$qs) ) );
 	}
 }
 
