@@ -241,9 +241,12 @@ class twitter{
 	 * @param integer|string $id The twitter ID or screenname of the user to follow
 	 * @return string
 	 */
-	function followUser( $id )
+	function followUser( $id, $notifications = false )
 	{
-		$request = 'http://twitter.com/friendships/create/' . $id . '.' . $this->type;
+		$request = 'http://twitter.com/friendships/create/' . (int) $id . '.' . $this->type;
+		if( $notifications )
+		    $request .= '?follow=true';
+		    
 		return $this->objectify( $this->process($request) );
 	}
 	
