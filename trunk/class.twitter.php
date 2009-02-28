@@ -73,6 +73,27 @@ class twitter{
 
 		return $this->objectify( $this->process($request, $postargs) );
 	}
+	
+	/**
+	 * Get @ replies
+	 * @param integer Optional. Paging of tweets. Number specifies which page of results
+	 * @param string $since (HTTP-formatted date) Optional.  Narrows the resulting list of direct messages to just those sent after the specified date. 
+     * @param integer $since_id Optional. Returns results posted that have an ID greater than $since_id
+     * @return string
+     **/
+	function getReplies( $page = false, $since = false, $since_id = false )
+	{
+	    $qs = '?';
+	    if( $page )
+	        $qs .= 'page=' . (int) $page;
+	    if( $since )
+	        $qs .= urlencode( $since );
+	    if( $since_id )
+	        $qs .= (int) $since_id;
+	        
+	    $request = 'http://twitter.com/statuses/replies.' . $this->type . $qs;    
+	    return $this->objectify( $this->process( $request ) );
+	}
     
 	/**
 	 * Send an unauthenticated request to Twitter for the public timeline. 
