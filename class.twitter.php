@@ -303,7 +303,7 @@ class twitter{
 	 * @param integer $id Required. User ID to request list of friend IDs for
 	 * return string
 	 */
-	function socialGraphFollowedBy( $id )
+	function socialGraphFollowedBy( $id = false )
 	{
 	    $request = 'http://twitter.com/followers/ids';
 	    if( $id )
@@ -665,7 +665,7 @@ class twitter{
 	function objectify( $data )
 	{
 		if( $this->type ==  'json' )
-			return (object) json_decode( $data );
+			return json_decode( $data );
 
 		else if( $this->type == 'xml' )
 		{
