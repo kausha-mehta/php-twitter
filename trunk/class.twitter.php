@@ -457,14 +457,13 @@ class twitter{
 	
 	/**
 	 * Updates Geo location
-	 * @param string $location Required. Must be rawurlencoded. Example (San%20Francisco)
+	 * @deprecated
+	 * @param string $location Required. 
 	 * @return string
 	 */
 	function updateLocation( $location )
 	{
-		$qs = '?location=' . rawurlencode($location);
-		$request = 'http://twitter.com/account/update_location.' . $this->type . $qs;
-		return $this->objectify( $this->process( $request ) );
+		$this->updateProfile( array( 'location' => $location ) );
 	}
 	
 	/**
