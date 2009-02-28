@@ -115,22 +115,19 @@ class twitter{
         if( $since !== false )
             $qs[] = 'since='.urlencode($since);
 		
-		if( $since_id )
-		{
+		if( $since_id ) :
 			$since_id = (int) $since_id;
 			$qs[] = 'since_id=' . $since_id;
-		}
+		endif;
 
-		if( $page )
-		{
+		if( $page ) :
 			$page = (int) $page;
 			$qs[] = 'page=' . $page;
-		}
-		
-		if ( $count == 20 )
-			$qs[] = 'page='.intval($count);
-		else
-			$qs[] = 'count=' . intval( $count );
+	    elseif ( $count ) :
+	        $qs[] = 'count=' . (int) $count;
+		else :
+		    $qs[] = 'count=20';
+		endif;
 			
         $qs = ( count($qs) > 0 ) ? '?' . implode('&', $qs) : '';
             
