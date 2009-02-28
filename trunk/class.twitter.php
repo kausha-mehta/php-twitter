@@ -65,6 +65,9 @@ class twitter{
 	 */
 	function update( $status, $replying_to = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
         $request = 'http://twitter.com/statuses/update.' . $this->type;
 		//$status = $this->shorturl($status);
         $postargs = array( 'status' => $status );
@@ -83,6 +86,9 @@ class twitter{
      **/
 	function getReplies( $page = false, $since = false, $since_id = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+	        
 	    $qs = '?';
 	    if( $page )
 	        $qs .= 'page=' . (int) $page;
@@ -102,6 +108,9 @@ class twitter{
 	 **/
 	function deleteStatus( $id )
     {
+        if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
         $request = 'http://twitter.com/statuses/destroy/' . (int) $id . '.' . $this->type;
         return $this->objectify( $this->process( $request ) );
     }
@@ -114,6 +123,9 @@ class twitter{
 	 */
 	function publicTimeline( $sinceid = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+	        
         $qs='';
         if( $sinceid !== false )
             $qs = '?since_id=' . intval($sinceid);
@@ -145,6 +157,9 @@ class twitter{
 	 */
 	function userTimeline($id=false,$count=20,$since=false,$since_id=false,$page=false)
 	{
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+	        
 		$qs = array();
         if( $since !== false )
             $qs[] = 'since='.rawurlencode($since);
@@ -180,6 +195,9 @@ class twitter{
 	 */
 	function showStatus( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
         $request = 'http://twitter.com/statuses/show/'.intval($id) . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
     }
@@ -192,6 +210,9 @@ class twitter{
 	 */
 	function getFavorites( $id, $page=false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+	        
 		if( $page != false )
 			$qs = '?page=' . $page;
 		
@@ -206,6 +227,9 @@ class twitter{
 	 */
 	function makeFavorite( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/favorites/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );	
 	}
@@ -217,6 +241,9 @@ class twitter{
 	 */
 	function removeFavorite( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/favorites/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );	
 	}
@@ -229,6 +256,9 @@ class twitter{
 	 */
 	function isFriend( $user_a, $user_b )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$qs = '?user_a=' . rawurlencode( $user_a ) . '&amp;' . rawurlencode( $user_b );
 		$request = 'http://twitter.com/friendships/exists.' . $this->type . $qs;
 		return $this->objectify( $this->process($request) );
@@ -242,6 +272,9 @@ class twitter{
 	 */
 	function followUser( $id, $notifications = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/friendships/create/' . (int) $id . '.' . $this->type;
 		if( $notifications )
 		    $request .= '?follow=true';
@@ -256,6 +289,9 @@ class twitter{
 	 */
 	function leaveUser( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/friendships/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
@@ -267,6 +303,9 @@ class twitter{
 	 */
 	function blockUser( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/blocks/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
@@ -278,6 +317,9 @@ class twitter{
 	 */
 	function unblockUser()
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/blocks/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
@@ -289,6 +331,9 @@ class twitter{
 	 */
 	function socialGraphFollowing( $id = false)
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $request = 'http://twitter.com/friends/ids';
 	    if( $id )
 	        $request .= '/' . (int) $id . '.' . $this->type;
@@ -303,6 +348,9 @@ class twitter{
 	 */
 	function socialGraphFollowedBy( $id = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $request = 'http://twitter.com/followers/ids';
 	    if( $id )
 	        $request .= '/' . (int) $id . '.' . $this->type;
@@ -318,6 +366,9 @@ class twitter{
 	 */
 	function friends( $id = false, $page = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    if( $id ) :
 	        if( is_int( $id ) )
 	            $qs .= (int) $id;
@@ -341,6 +392,9 @@ class twitter{
 	 */
 	function followers( $page = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
         $request = 'http://twitter.com/statuses/followers.' . $this->type;
         if( $page )
             $request .= '?page=' . (int) $page;
@@ -371,6 +425,9 @@ class twitter{
 	 */
 	function showUser( $id, $email = false, $user_id = false, $screen_name=false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    if( $user_id ) :
 	        $qs = '?user_id=' . (int) $user_id;
 	    elseif ( $screen_name ) :
@@ -397,6 +454,9 @@ class twitter{
 	 */
 	function directMessages( $since = false, $count = null, $since_id = false, $page = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+	        
         $qs='?';
         $qsparams = array();
         if( $since !== false )
@@ -421,6 +481,9 @@ class twitter{
 	 */	
 	function sentDirectMessage( $since = false, $since_id = false, $page = false )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $qs = '?';
 	    $qsparams = array();
 	    if( $since !== false )
@@ -443,14 +506,25 @@ class twitter{
 	 */
 	function sendDirectMessage( $user, $text )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
         $request = 'http://twitter.com/direct_messages/new.' . $this->type;
         $postargs = 'user=' . rawurlencode($user) . '&text=' . rawurlencode($text);
 
 		return $this->objectify( $this->process($request, $postargs) );
 	}
 	
+	/** 
+	 * Deletes a direct message
+	 * @param integer $id Required
+	 * @return string
+	 */
 	function deleteDirectMessage( $id )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $request = 'http://twitter.com/direct_messages/destroy/' . (int) $id . '.' . $this->type;
 	    return $this->objectify( $this->process( $request ) );
 	}
@@ -473,6 +547,9 @@ class twitter{
 	 */
 	function updateDevice( $device )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		if( !in_array( $device, array('im','sms','none') ) )
 			return false;
 			
@@ -487,6 +564,9 @@ class twitter{
 	 */
 	function updateAvatar( $file )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    // Adding @ ensures the POST will be raw multipart data encoded. This MUST be a file, not a URL. Handle it outside of the class.
 	    $postdata = array( 'image' => "@$file");
 	    $request = 'http://twitter.com/account/update_profile_image.' . $this->type;
@@ -499,6 +579,9 @@ class twitter{
 	 */	
 	function updateBackground( $file )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    // Adding @ ensures the POST will be raw multipart data encoded. This MUST be a file, not a URL. Handle it outside of the class.
 	    $postdata = array( 'image' => "@$file");
 	    $request = 'http://twitter.com/account/update_profile_background_image.' . $this->type;
@@ -511,6 +594,9 @@ class twitter{
 	 */
 	function updateProfile( $fields = array() )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $postdata = array();
 	    foreach( $fields as $pk => $pv ) :
 	        switch( $pk ) 
@@ -547,6 +633,9 @@ class twitter{
 	 */
 	function updateColors( $colors = array() )
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 	    $postdata = array();
 	    foreach( $colors as $ck => $cv ) :
 	        if( preg_match('/^(?:(?:[a-f\d]{3}){1,2})$/i', $hex) ) :
@@ -564,6 +653,9 @@ class twitter{
 	 */
 	function twitterAvailable()
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
 		$request = 'http://twitter.com/help/test.' . $this->type;
 		if( $this->objectify( $this->process($request) ) == 'ok' )
 			return true;
@@ -587,6 +679,8 @@ class twitter{
 	 */
 	function ratelimit()
 	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
 		return $this->objectify( $out );
 	}
