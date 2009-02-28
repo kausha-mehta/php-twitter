@@ -362,7 +362,7 @@ class twitter{
 	 * @param int $count DEPRECATED. Remains for Backwards Compat
 	 * @param integer $since_id
 	 * @param integer $page
-	 * @deprecated $count - Ignored
+	 * @deprecated $count
 	 * @return string
 	 */
 	function directMessages( $since = false, $count = null, $since_id = false, $page = false )
@@ -379,6 +379,29 @@ class twitter{
         $request = 'http://twitter.com/direct_messages.' . $this->type . implode( '&', $qsparams );
 
 		return $this->objectify( $this->process($request) );
+	}
+
+	/**
+	 * Returns a list of the sent direct messages from the authenticating user.	 
+	 * @param string $since (HTTP-formatted date) Optional.  Narrows the resulting list of direct messages to just those sent after the specified date. 
+	 * @param integer $since_id
+	 * @param integer $page
+	 * @deprecated $count
+	 * @return string
+	 */	
+	function sentDirectMessage( $since = false, $since_id = false, $page = false )
+	{
+	    $qs = '?';
+	    $qsparams = array();
+	    if( $since !== false )
+            $qsparams['since'] = urlencode($since);
+        if( $since_id )
+            $qsparams['since_id'] = (int) $since_id;
+        if( $page )
+            $qsparams['page'] = (int) $page;
+            
+        $request = 'http://twitter.com/direct_messages/sent.' . $this->type . implode( '&', $qsparams );
+        return $this->objectify( $this->process($request) );
 	}
     
 	/**
