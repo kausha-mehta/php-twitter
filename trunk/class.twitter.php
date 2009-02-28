@@ -285,13 +285,21 @@ class twitter{
 	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
 	 * @return string
 	 */
-	function friends( $id = false )
+	function friends( $id = false, $page = false )
 	{
-        if( $id === false )
-            $request = 'http://twitter.com/statuses/friends.' . $this->type;
-        else
-            $request = 'http://twitter.com/statuses/friends/' . urlencode($id) . '.' . $this->type;
-        $out = $this->process($request);
+	    if( $id ) :
+	        if( is_int( $id ) )
+	            $qs .= (int) $id;
+	        else
+	            $qs .= (string) urlencode( $id );
+	    endif;
+	    
+	    $qs .= '.' . $this->type;
+	    
+	    if( $page )
+	        $qs .= '?page=' . (int) $page;
+	        
+	    $request = 'http://twitter.com/statuses/friends/' . $qs;
 		return $this->objectify( $this->process($request) );
 	}
     
