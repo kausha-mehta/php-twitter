@@ -687,11 +687,11 @@ class twitter{
 	
 	/**
 	 * Rate Limit statuses (extended). Provides helper data like remaining-hits, hourly limit, reset time and reset time in seconds
-	*/
+	 * @deprecated
+ 	 */
 	function ratelimit_status()
 	{
-		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		return $this->objectify( $this->process($request) );
+		return $this->ratelimit();
 	}
 	
 	/**
