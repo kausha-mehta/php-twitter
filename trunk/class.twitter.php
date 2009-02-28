@@ -360,17 +360,22 @@ class twitter{
 	 * Returns a list of the direct messages sent to the authenticating user.	 
 	 * @param string $since (HTTP-formatted date) Optional.  Narrows the resulting list of direct messages to just those sent after the specified date. 
 	 * @param int #count Optional. Limits the result set size. Please don't request more than 3200, per Twitter best-practices. Default is 20
+	 * @deprecated $count - Ignored
 	 * @return string
 	 */
-	function directMessages( $since = false, $count = 20 )
+	function directMessages( $since = false, $count = 20, $since_id = false, $page = false )
 	{
-        $qs='';
+        $qs='?';
+        $qsparams = array();
         if( $since !== false )
-            $qs = '?since=' . urlencode($since);
-        if( $count && $count <= 3200)
-            $qs = $qs . '&count=' . $count;
-        $request = 'http://twitter.com/direct_messages.' . $this->type .$qs;
-        $out = $this->process($request);
+            $qsparams['since'] = urlencode($since);
+        if( $since_id )
+            $qsparams['since_id'] = (int) $since_id;
+        if( $page )
+            $qsparams['page'] = (int) $page;
+            
+        $request = 'http://twitter.com/direct_messages.' . $this->type . implode( '&', $qsparams );
+
 		return $this->objectify( $this->process($request) );
 	}
     
