@@ -94,6 +94,17 @@ class twitter{
 	    $request = 'http://twitter.com/statuses/replies.' . $this->type . $qs;    
 	    return $this->objectify( $this->process( $request ) );
 	}
+	
+	/**
+	 * Destroy a tweet
+	 * @param integer $id Required.
+	 * @return string
+	 **/
+	function deleteStatus( $id )
+    {
+        $request = 'http://twitter.com/statuses/destroy/' . (int) $id . $this->type;
+        return $this->objectify( $this->process( $request ) );
+    }
     
 	/**
 	 * Send an unauthenticated request to Twitter for the public timeline. 
