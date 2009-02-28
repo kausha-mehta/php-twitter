@@ -239,6 +239,7 @@ class twitter{
 	/**
 	 * Sends a request to follow a user specified by ID
 	 * @param integer|string $id The twitter ID or screenname of the user to follow
+	 * @param boolean $notifications Optional. If true, you will recieve notifications from the users updates
 	 * @return string
 	 */
 	function followUser( $id, $notifications = false )
