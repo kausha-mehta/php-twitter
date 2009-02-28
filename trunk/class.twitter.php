@@ -69,7 +69,7 @@ class twitter{
 		//$status = $this->shorturl($status);
         $postargs = array( 'status' => $status );
         if( $replying_to )
-            $postargs['in_reply_to_status_id'] = (int) = $replying_to; 
+            $postargs['in_reply_to_status_id'] = (int) $replying_to; 
 
 		return $this->objectify( $this->process($request, $postargs) );
 	}
