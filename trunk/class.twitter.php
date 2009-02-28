@@ -63,13 +63,15 @@ class twitter{
 	 * @param string $status total length of the status update must be 140 chars or less.
 	 * @return string|boolean
 	 */
-	function update($status)
+	function update( $status, $replying_to = false )
 	{
         $request = 'http://twitter.com/statuses/update.' . $this->type;
 		//$status = $this->shorturl($status);
-        $postargs = 'status='.urlencode($status);
-        $out = $this->process($request,$postargs);
-		return $this->objectify( $this->process($request) );
+        $postargs = array( 'status' => $status );
+        if( $replying_to )
+            $postargs['in_reply_to_status_id'] = (int) = $replying_to; 
+
+		return $this->objectify( $this->process($request, $postargs) );
 	}
     
 	/**
