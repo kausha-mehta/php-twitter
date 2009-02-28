@@ -102,7 +102,7 @@ class twitter{
 	 **/
 	function deleteStatus( $id )
     {
-        $request = 'http://twitter.com/statuses/destroy/' . (int) $id . $this->type;
+        $request = 'http://twitter.com/statuses/destroy/' . (int) $id . '.' . $this->type;
         return $this->objectify( $this->process( $request ) );
     }
     
@@ -254,7 +254,7 @@ class twitter{
 	 */
 	function leaveUser( $id )
 	{
-		$request = 'http://twitter.com/friendships/destroy/' . $id . $this->type;
+		$request = 'http://twitter.com/friendships/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
 	
@@ -265,7 +265,7 @@ class twitter{
 	 */
 	function blockUser( $id )
 	{
-		$request = 'http://twitter.com/blocks/create/' . $id . $this->type;
+		$request = 'http://twitter.com/blocks/create/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
 	
@@ -276,7 +276,7 @@ class twitter{
 	 */
 	function unblockUser()
 	{
-		$request = 'http://twitter.com/blocks/destroy/' . $id . $this->type;
+		$request = 'http://twitter.com/blocks/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
 
@@ -417,6 +417,12 @@ class twitter{
         $postargs = 'user=' . urlencode($user) . '&text=' . urlencode($text);
 
 		return $this->objectify( $this->process($request, $postargs) );
+	}
+	
+	function deleteDirectMessage( $id )
+	{
+	    $request = 'http://twitter.com/direct_messages/destroy/' . (int) $id . '.' . $this->type;
+	    return $this->objectify( $this->process( $request ) );
 	}
 	
 	/**
