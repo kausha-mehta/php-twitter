@@ -283,6 +283,7 @@ class twitter{
 	/**
 	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
 	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
+	 * @param integer $page Optional. 
 	 * @return string
 	 */
 	function friends( $id = false, $page = false )
@@ -305,12 +306,15 @@ class twitter{
     
 	/**
 	 * Returns the authenticating user's followers, each with current status inline.
+	 * @param integer $page Optional.
 	 * @return string
 	 */
-	function followers()
+	function followers( $page = false )
 	{
         $request = 'http://twitter.com/statuses/followers.' . $this->type;
-        $out = $this->process($request);
+        if( $page )
+            $request .= '?page=' . (int) $page;
+        
 		return $this->objectify( $this->process($request) );
 	}
     
