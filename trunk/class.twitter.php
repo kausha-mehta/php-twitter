@@ -133,20 +133,7 @@ class twitter{
 
 		return $this->objectify( $this->process($request) );
 	}
-    
-	/**
-	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
-	 * Returns the last 20 updates by default
-	 * @deprecated true
-	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
-	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
-	 * @return string
-	 */
-	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
-	{
-		return $this->userTimeline( $id, $count, $since, $since_id, $page );
-	}
-	    
+      
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating user. 
 	 * Returns the last 20 updates by default
@@ -403,17 +390,6 @@ class twitter{
 	}
     
 	/**
-	 * Returns a list of the users currently featured on the site with their current statuses inline.
-	 * @return string
-	 */
-	function featured()
-	{
-        $request = 'http://twitter.com/statuses/featured.' . $this->type;
-		return $this->objectify( $this->process($request) );
-	}
-    
-
-	/**
 	 * Returns extended information of a given user, specified by ID or screen name as per the required
 	 * id parameter below.  This information includes design settings, so third party developers can theme
 	 * their widgets according to a given user's preferences.	 
@@ -527,17 +503,6 @@ class twitter{
 	        
 	    $request = 'http://twitter.com/direct_messages/destroy/' . (int) $id . '.' . $this->type;
 	    return $this->objectify( $this->process( $request ) );
-	}
-	
-	/**
-	 * Updates Geo location
-	 * @deprecated
-	 * @param string $location Required. 
-	 * @return string
-	 */
-	function updateLocation( $location )
-	{
-		$this->updateProfile( array( 'location' => $location ) );
 	}
 	
 	/**
@@ -665,12 +630,12 @@ class twitter{
 	
 	/**
 	 * Any prescheduled maintenance?
-	 * @return string
+	 * @deprecated
+	 * @return false
 	 */
 	function maintenanceSchedule()
 	{
-		$request = 'http://twitter.com/help/downtime_schedule.' . $this->type;
-		return $this->objectify( $this->process( $request ) );
+		return false;
 	}
 
 	/**
@@ -745,6 +710,42 @@ class twitter{
         else
             return false;
 	}
+	
+	/***DEPRECATED***/
+	/**
+	 * Returns a list of the users currently featured on the site with their current statuses inline.
+	 * @deprecated
+	 * @return string
+	 */
+	function featured()
+	{
+        return false;
+	}
+	
+	/**
+	 * Updates Geo location
+	 * @deprecated
+	 * @param string $location Required. 
+	 * @return string
+	 */
+	function updateLocation( $location )
+	{
+		$this->updateProfile( array( 'location' => $location ) );
+	}
+	
+	/**
+	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
+	 * Returns the last 20 updates by default
+	 * @deprecated true
+	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
+	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
+	 * @return string
+	 */
+	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
+	{
+		return $this->userTimeline( $id, $count, $since, $since_id, $page );
+	}
+	
 
 	/**
 	 * Function to prepare data for return to client
