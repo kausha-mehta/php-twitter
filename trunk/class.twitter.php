@@ -283,6 +283,17 @@ class twitter{
 		$request = 'http://twitter.com/blocks/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
 	}
+	
+	/**
+	 * Returns a list of IDs of all friends for the specified user
+	 * @param integer $id Required. User ID to request list of friend IDs for
+	 * return string
+	 */
+	function socialGraph( $id )
+	{
+	    $request = 'http://twitter.com/friends/' . (int) $id . '.' . $this->type;
+	    return $this->objectify( $this->process($request) );
+	}
 
 	/**
 	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
