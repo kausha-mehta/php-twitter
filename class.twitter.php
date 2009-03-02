@@ -57,6 +57,8 @@ class twitter{
 	{
 		// Nothing
 	}
+	
+	/****** Statuses ******/
 
 	/**
 	 * Send a status update to Twitter.
@@ -188,6 +190,53 @@ class twitter{
         $request = 'http://twitter.com/statuses/show/'.intval($id) . '.' . $this->type;
 		return $this->objectify( $this->process($request) );
     }
+    
+    /**
+	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
+	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
+	 * @param integer $page Optional. 
+	 * @return string
+	 */
+	function friends( $id = false, $page = false )
+	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
+	    if( $id ) :
+	        if( is_int( $id ) )
+	            $qs .= (int) $id;
+	        else
+	            $qs .= (string) rawurlencode( $id );
+	    endif;
+	    
+	    $qs .= '.' . $this->type;
+	    
+	    if( $page )
+	        $qs .= '?page=' . (int) $page;
+	        
+	    $request = 'http://twitter.com/statuses/friends/' . $qs;
+		return $this->objectify( $this->process($request) );
+	}
+    
+	/**
+	 * Returns the authenticating user's followers, each with current status inline.
+	 * @param integer $page Optional.
+	 * @return string
+	 */
+	function followers( $page = false )
+	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+	        
+        $request = 'http://twitter.com/statuses/followers.' . $this->type;
+        if( $page )
+            $request .= '?page=' . (int) $page;
+        
+		return $this->objectify( $this->process($request) );
+	}
+
+
+    /****** Favorites ******/
 
 	/**
 	 * Retrieves favorited tweets
@@ -234,6 +283,8 @@ class twitter{
 		$request = 'http://twitter.com/favorites/destroy/' . $id . '.' . $this->type;
 		return $this->objectify( $this->process($request) );	
 	}
+	
+	/****** Friendships ******/
 	
 	/**
 	 * Checks to see if a friendship already exists
@@ -283,6 +334,8 @@ class twitter{
 		return $this->objectify( $this->process($request) );
 	}
 	
+	/****** Blocks ******/
+	
 	/**
 	 * Blocks a user
 	 * @param integer|string $id the username or ID of a person you want to block
@@ -311,11 +364,15 @@ class twitter{
 		return $this->objectify( $this->process($request) );
 	}
 	
+	/****** Social Graph ******/
+	
 	/**
 	 * Returns a list of IDs of all friends for the specified user
 	 * @param integer $id Required. User ID to request list of friend IDs for
 	 * return string
 	 */
+	 
+	 /* @todo same as friends()? */
 	function socialGraphFollowing( $id = false)
 	{
 	    if( !in_array( $this->type, array( 'xml','json' ) ) )
@@ -333,6 +390,8 @@ class twitter{
 	 * @param integer $id Required. User ID to request list of friend IDs for
 	 * return string
 	 */
+	 
+	 /* @todo same as followers() */
 	function socialGraphFollowedBy( $id = false )
 	{
 	    if( !in_array( $this->type, array( 'xml','json' ) ) )
@@ -345,49 +404,7 @@ class twitter{
 	    return $this->objectify( $this->process($request) );
 	}
 	
-	/**
-	 * Returns the authenticating user's friends, each with current status inline.  It's also possible to request another user's friends list via the id parameter below.
-	 * @param integer|string $id Optional. The user ID or name of the Twitter user to query.
-	 * @param integer $page Optional. 
-	 * @return string
-	 */
-	function friends( $id = false, $page = false )
-	{
-	    if( !in_array( $this->type, array( 'xml','json' ) ) )
-	        return false;
-	        
-	    if( $id ) :
-	        if( is_int( $id ) )
-	            $qs .= (int) $id;
-	        else
-	            $qs .= (string) rawurlencode( $id );
-	    endif;
-	    
-	    $qs .= '.' . $this->type;
-	    
-	    if( $page )
-	        $qs .= '?page=' . (int) $page;
-	        
-	    $request = 'http://twitter.com/statuses/friends/' . $qs;
-		return $this->objectify( $this->process($request) );
-	}
-    
-	/**
-	 * Returns the authenticating user's followers, each with current status inline.
-	 * @param integer $page Optional.
-	 * @return string
-	 */
-	function followers( $page = false )
-	{
-	    if( !in_array( $this->type, array( 'xml','json' ) ) )
-	        return false;
-	        
-        $request = 'http://twitter.com/statuses/followers.' . $this->type;
-        if( $page )
-            $request .= '?page=' . (int) $page;
-        
-		return $this->objectify( $this->process($request) );
-	}
+	/****** Users ******/
     
 	/**
 	 * Returns extended information of a given user, specified by ID or screen name as per the required
@@ -418,6 +435,8 @@ class twitter{
         
 		return $this->objectify( $this->process($request) );
 	}
+	
+	/****** Direct Messages ******/
     
 	/**
 	 * Returns a list of the direct messages sent to the authenticating user.	 
@@ -504,6 +523,8 @@ class twitter{
 	    $request = 'http://twitter.com/direct_messages/destroy/' . (int) $id . '.' . $this->type;
 	    return $this->objectify( $this->process( $request ) );
 	}
+	
+	/****** Account ******/
 	
 	/**
 	 * Updates delivery device
@@ -613,6 +634,29 @@ class twitter{
 	}
 	
 	/**
+	 * Rate Limit API Call. Sometimes Twitter needs to degrade. Use this non-ratelimited API call to work your logic out
+	 * @return integer|boolean 
+	 */
+	function ratelimit()
+	{
+	    if( !in_array( $this->type, array( 'xml','json' ) ) )
+	        return false;
+		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
+		return $this->objectify( $out );
+	}
+	
+	/**
+	 * Rate Limit statuses (extended). Provides helper data like remaining-hits, hourly limit, reset time and reset time in seconds
+	 * @deprecated
+ 	 */
+	function ratelimit_status()
+	{
+		return $this->ratelimit();
+	}
+	
+	/****** Tests ******/
+	
+	/**
 	 * Detects if Twitter is up or down. Chances are, it will be down. ;-) Here's a hint - display CPM ads whenever Twitter is down
 	 * @return boolean
 	 */
@@ -637,27 +681,8 @@ class twitter{
 	{
 		return false;
 	}
-
-	/**
-	 * Rate Limit API Call. Sometimes Twitter needs to degrade. Use this non-ratelimited API call to work your logic out
-	 * @return integer|boolean 
-	 */
-	function ratelimit()
-	{
-	    if( !in_array( $this->type, array( 'xml','json' ) ) )
-	        return false;
-		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		return $this->objectify( $out );
-	}
 	
-	/**
-	 * Rate Limit statuses (extended). Provides helper data like remaining-hits, hourly limit, reset time and reset time in seconds
-	 * @deprecated
- 	 */
-	function ratelimit_status()
-	{
-		return $this->ratelimit();
-	}
+	/****** Private and Helpers Methods ******/
 	
 	/**
 	 * Uses the http://is.gd API to produce a shortened URL. Pluggable by extending the twitter class
@@ -730,7 +755,7 @@ class twitter{
 	 */
 	function updateLocation( $location )
 	{
-		$this->updateProfile( array( 'location' => $location ) );
+		return $this->updateProfile( array( 'location' => $location ) );
 	}
 	
 	/**
