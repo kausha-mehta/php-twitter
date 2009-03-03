@@ -52,6 +52,11 @@ class twitter{
 	 * @var boolean
 	 */
 	 var $suppress_response_code = false;
+	 
+	/**
+	 * @var boolean
+	 */
+	 var $debug = false;
     
 	function twitter()
 	{
@@ -91,14 +96,18 @@ class twitter{
 	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
 	        return false;
 	        
-	    $qs = '?';
+	    $args = array();
 	    if( $page )
-	        $qs .= 'page=' . (int) $page;
+	        $args['page'] = (int) $page;
 	    if( $since )
-	        $qs .= rawurlencode( $since );
+	        $args['since'] = (string) $since;
 	    if( $since_id )
-	        $qs .= (int) $since_id;
-	        
+	        $args['since_id'] = (int) $since_id;
+	    
+	    $qs = '';
+	    if( !empty( $args ) )
+	        $qs = $this->_glue( $args );
+	    
 	    $request = 'http://twitter.com/statuses/replies.' . $this->type . $qs;    
 	    return $this->objectify( $this->process( $request ) );
 	}
@@ -114,7 +123,7 @@ class twitter{
 	        return false;
 	        
         $request = 'http://twitter.com/statuses/destroy/' . (int) $id . '.' . $this->type;
-        return $this->objectify( $this->process( $request ) );
+        return $this->objectify( $this->process( $request, true ) );
     }
     
 	/**
@@ -148,27 +157,23 @@ class twitter{
 	{
 	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
 	        return false;
-	        
-		$qs = array();
-        if( $since !== false )
-            $qs[] = 'since='.rawurlencode($since);
-		
-		if( $since_id ) :
-			$since_id = (int) $since_id;
-			$qs[] = 'since_id=' . $since_id;
-		endif;
-
-		if( $page ) :
-			$page = (int) $page;
-			$qs[] = 'page=' . $page;
-	    elseif ( $count ) :
-	        $qs[] = 'count=' . (int) $count;
-		else :
-		    $qs[] = 'count=20';
-		endif;
-			
-        $qs = ( count($qs) > 0 ) ? '?' . implode('&', $qs) : '';
-            
+	    
+	    $args = array();
+	    if( $id )
+	        $args['id'] = $id;
+	    if( $count )
+	        $args['count'] = (int) $count;
+	    if( $since )
+	        $args['since'] = (string) $since;
+	    if( $since_id )
+	        $args['since_id'] = (int) $since_id;
+	    if( $page )
+	        $args['page'] = (int) $page;
+	    
+	    $qs = '';
+	    if( !empty( $args ) )
+	        $qs = $this->_glue( $args );
+			            
         if( $id === false )
             $request = 'http://twitter.com/statuses/user_timeline.' . $this->type . $qs;
         else
@@ -202,19 +207,17 @@ class twitter{
 	    if( !in_array( $this->type, array( 'xml','json' ) ) )
 	        return false;
 	        
-	    if( $id ) :
-	        if( is_int( $id ) )
-	            $qs .= (int) $id;
-	        else
-	            $qs .= (string) rawurlencode( $id );
-	    endif;
-	    
-	    $qs .= '.' . $this->type;
-	    
+        $args = array();
+	    if( $id )
+	        $args['id'] = $page;
 	    if( $page )
-	        $qs .= '?page=' . (int) $page;
+	        $args['page'] = (int) $page;
+	    
+	    $qs = '';
+	    if( !empty( $args ) )
+	        $qs = $this->_glue( $args );
 	        
-	    $request = 'http://twitter.com/statuses/friends/' . $qs;
+	    $request = ( $id ) ? 'http://twitter.com/statuses/friends/' . $id . '.' . $this->type . $qs : 'http://twitter.com/statuses/friends.' . $this->type . $qs;
 		return $this->objectify( $this->process($request) );
 	}
     
@@ -717,18 +720,28 @@ class twitter{
 		if($this->username !== false && $this->password !== false)
 			curl_setopt($ch, CURLOPT_USERPWD, $this->username.':'.$this->password );
         
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
         curl_setopt($ch, CURLOPT_NOBODY, 0);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+        if( $this->debug ) :
+            curl_setopt($ch, CURLOPT_HEADER, true);
+        else :
+            curl_setopt($ch, CURLOPT_HEADER, false);
+        endif;
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
         @curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
 
         $response = curl_exec($ch);
         
         $this->responseInfo=curl_getinfo($ch);
         curl_close($ch);
+        
+        
+        if( $this->debug ) :
+            $debug = preg_split("#\n\s*\n|\r\n\s*\r\n#m", $response);
+            echo'<pre>' . $debug[0] . '</pre>'; exit;
+        endif;
         
         if( intval( $this->responseInfo['http_code'] ) == 200 )
 			return $response;    
@@ -784,24 +797,29 @@ class twitter{
 
 		else if( $this->type == 'xml' )
 		{
-			if( function_exists('simplexml_load_string') )
-			{
-				$obj = simplexml_load_string( $data );
-
-				$statuses = array();
-				foreach( $obj->status as $status )
-				{
-					$statuses[] = $status;
-				}
-				return (object) $statuses;
-			}
-			else
-			{
-				return $out;
-			}
+			if( function_exists('simplexml_load_string') ) :
+			    $obj = simplexml_load_string( $data );			        
+			endif;
+			return $obj;
 		}
 		else
 			return false;
+	}
+	
+	/**
+	 * Function to piece together a cohesive query string
+	 * @access private
+	 * @param array $array
+	 * @return string
+	 */
+	function _glue( $array )
+	{
+	    $query_string = '';
+	    foreach( $array as $key => $val ) :
+	        $query_string .= $key . '=' . rawurlencode( $val ) . '&';
+	    endforeach;
+	    
+	    return '?' . substr( $query_string, 0, strlen( $query_string )-1 );
 	}
 }
 
