@@ -854,6 +854,14 @@ class summize extends twitter
 			
 		return $this->objectify( $this->process($request . '?' . implode('&',$qs) ) );
 	}
+	
+	function trends( $callback = false )
+	{
+	    $qs = ( $callback ) ? '?callback=' . $callback : '';
+	    $request = 'http://search.twitter.com/trends.' . $this->stype . $qs;
+	    
+	    return $this->objectify( $this->process( $request ) );
+	}
 }
 
 ?>
