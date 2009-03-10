@@ -426,7 +426,6 @@ class twitter{
 			curl_setopt($ch, CURLOPT_USERPWD, $this->username.':'.$this->password);
         
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_NOBODY, 0);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_USERAGENT, $this->user_agent);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
