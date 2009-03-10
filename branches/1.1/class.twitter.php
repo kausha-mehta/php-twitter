@@ -722,7 +722,6 @@ class twitter{
         
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
-        curl_setopt($ch, CURLOPT_NOBODY, 0);
         if( $this->debug ) :
             curl_setopt($ch, CURLOPT_HEADER, true);
         else :
