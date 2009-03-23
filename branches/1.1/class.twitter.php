@@ -456,18 +456,20 @@ class twitter{
 	{
 	    if( !in_array( $this->type, array( 'xml','json' ) ) )
 	        return false;
-	        
+	    
+	    $qs = array();
 	    if( $user_id ) :
-	        $qs = '?user_id=' . (int) $user_id;
+	        $qs['user_id'] = (int) $user_id;
 	    elseif ( $screen_name ) :
-	        $qs = '?screen_name=' . (string) $screen_name;
+	        $qs['screen_name'] = (string) $screen_name;
 	    elseif ( $email ) :
-	        $qs = '?email=' . (string) $email;
-	    else :
-	        $qs = (int) $id;
+	        $qs['email'] = (string) $email;
 	    endif;
 	    
-        $request = 'http://twitter.com/users/show/' . $qs . $this->type;
+	    $query_string = _glue( $qs );
+	    $id = (int) $id;
+	    
+        $request = 'http://twitter.com/users/show/' . $id . $this->type . $query_string;
         
 		return $this->objectify( $this->process($request) );
 	}
