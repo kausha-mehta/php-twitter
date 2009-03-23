@@ -749,6 +749,46 @@ class twitter{
             return false;
 	}
 	
+	function process_multipart($url, $postdata)
+	{
+	    if( !$postdata['image'] )
+	        return false;
+	        
+	    $url_parts = parse_url( $url );
+	    $host = $url_parts['host'];
+	    $path = $url_parts['path'];
+	    
+        srand((double)microtime()*1000000);
+        $boundary = "---------------------".substr(md5(rand(0,32000)),0,10);
+	    $filesize = strlen( $postdata['image']['size'] );
+	    $tmpfilename = $postdata['image']['tmp_name'];
+	    $filename = $postdata['image']['name'];
+	    $filetype = $postdata['image']['type'];
+	    
+	    $fp = fsockopen( $host, 80, $errno, $errstr );
+	    if( $fp ) :
+	        $headers = "POST $path HTTP/1.1\r\n";
+	        $headers .= "Host: $host\r\n";
+	        $headers .= "Content-type: multipart/form-data, boundary=$boundary\r\n";
+	        foreach( $postdata as $key => $val ) :
+	            $data .= "--$boundary\r\n";
+	            $data .= "Content-Disposition: form/data; name=\"$key\"\r\n";
+	            $data .= "\r\n$val\r\n";
+	            $data .= "--$boundary\r\n";
+	        endforeach;
+	        $data .= "--$boundary\r\n";
+	        $content_file = join( "", file($tmpfilename) );
+	        $data .= "Content-Disposition: form/data; name=\"userfile\"; filename=\"$name\"\r\n";
+	        $data .= "Content-Type: $filetype\r\n\r\n";
+	        $data .= "$content_file\r\n";
+	        $data .= "--$boundary--\r\n";
+	        $headers .= "Content-Length: " . strlen($data) . "\r\n\r\n";
+	        $headers .= "Connection: Close\r\n\r\n";
+	    endif;
+	    fputs( $fp, $headers, $data );
+	    fclose( $fp );
+	}
+	
 	/***DEPRECATED***/
 	/**
 	 * Returns a list of the users currently featured on the site with their current statuses inline.
