@@ -680,7 +680,7 @@ class twitter{
 	    if( !in_array( $this->type, array( 'xml','json' ) ) )
 	        return false;
 		$request = 'http://twitter.com/account/rate_limit_status.' . $this->type;
-		return $this->objectify( $out );
+		return $this->objectify( $this->request( $request ) );
 	}
 	
 	/**
