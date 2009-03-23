@@ -181,6 +181,39 @@ class twitter{
         
 		return $this->objectify( $this->process($request) );
 	}
+	
+	
+	/**
+	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
+	 * Returns the last 20 updates by default
+	 * @param boolean|string|integer $id Unused, but left for Back-compat. Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
+	 * @param boolean|string Optional. $since Narrows the returned results to just those statuses created after the specified date.
+	 * @param boolean|integer Optional. $since_id Narrows the returned results to just those statuses created after the specified status ID
+	 * @param boolean|integer Optional. $count specifies the number of status messages to be returned with the resultset. May not be greater than 200. Integers greater than 200 will be limited to 200
+	 * @param boolean|integer Optional. Specifies the page number of the resultset in groups of 20.
+	 * @return string
+	 */
+	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
+	{
+	    $qs = array();
+	    if( $since )
+	        $qs['since'] = $since;
+	    if( $since_id )
+	        $qs['since_id'] = $since_id;
+	    if( $count )
+	    {
+	        if( $count > 200 )
+	            $count = 200;
+	            
+	        $qs['count'] = $count;
+        }
+	    if( $page )
+	        $qs['page'] = $page;
+	        
+	    $query_string = _glue( $qs );
+	    $request = 'http://twitter.com/statuses/friends_timeline.' . $this->type . $query_string;
+	    return $this->objectify( $this->request( $request) );
+	}
     
 	/**
 	 * Returns a single status, specified by the id parameter below.  The status's author will be returned inline.
@@ -722,6 +755,7 @@ class twitter{
         
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_VERBOSE, 1);
+        curl_setopt($ch, CURLOPT_NOBODY, 0);
         if( $this->debug ) :
             curl_setopt($ch, CURLOPT_HEADER, true);
         else :
@@ -769,20 +803,6 @@ class twitter{
 	{
 		return $this->updateProfile( array( 'location' => $location ) );
 	}
-	
-	/**
-	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
-	 * Returns the last 20 updates by default
-	 * @deprecated true
-	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
-	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
-	 * @return string
-	 */
-	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
-	{
-		return $this->userTimeline( $id, $count, $since, $since_id, $page );
-	}
-	
 
 	/**
 	 * Function to prepare data for return to client
@@ -826,7 +846,7 @@ class twitter{
  * Wrapper class around the Twitter Search (formerly, and affectionately known as Summize)
  * @author Aaron Brazell <aaron@technosailor.com>
  * @author Keith Casey <caseysoftware@gmail.com>
- * @version 1.1
+ * @version 1.1-alpha
  * @package php-twitter
  * @subpackage classes
  */
@@ -852,14 +872,6 @@ class summize extends twitter
 			$qs[] = 'callback=' . $callback;
 			
 		return $this->objectify( $this->process($request . '?' . implode('&',$qs) ) );
-	}
-	
-	function trends( $callback = false )
-	{
-	    $qs = ( $callback ) ? '?callback=' . $callback : '';
-	    $request = 'http://search.twitter.com/trends.' . $this->stype . $qs;
-	    
-	    return $this->objectify( $this->process( $request ) );
 	}
 }
 
