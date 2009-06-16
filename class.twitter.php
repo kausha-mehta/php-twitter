@@ -144,38 +144,44 @@ class twitter{
 	 * Send an authenticated request to Twitter for the timeline of authenticating user. 
 	 * Returns the last 20 updates by default
 	 * @param boolean|integer $id Specifies the ID or screen name of the user for whom to return the friends_timeline. (set to false if you want to use authenticated user).
-	 * @param boolean|integer $since Narrows the returned results to just those statuses created after the specified date.
+	 * @param boolean|integer $user_id specifies the id of a twitter user
+	 * @param boolean|string $screen_name specifies the twitter name
+	 * @param boolean|integer $since_id Narrows the returned results to just those statuses created after the specified status id.
+	 * @param boolean|integer $max_id Narrows the returned results to just those status up to the status id specified
+	 * @param boolean $page specifies whetther to page results
 	 * @deprecated integer $count. As of July 7 2008, Twitter has requested the limitation of the count keyword. Therefore, we deprecate
 	 * @return string
 	 */
-	function userTimeline($id=false,$count=20,$since=false,$since_id=false,$page=false)
-	{
-	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
-	        return false;
-	    
-	    $args = array();
-	    if( $id )
-	        $args['id'] = $id;
-	    if( $count )
-	        $args['count'] = (int) $count;
-	    if( $since )
-	        $args['since'] = (string) $since;
-	    if( $since_id )
-	        $args['since_id'] = (int) $since_id;
-	    if( $page )
-	        $args['page'] = (int) $page;
-	    
-	    $qs = '';
-	    if( !empty( $args ) )
-	        $qs = $this->_glue( $args );
-			            
-        if( $id === false )
-            $request = 'http://twitter.com/statuses/user_timeline.' . $this->type . $qs;
-        else
-            $request = 'http://twitter.com/statuses/user_timeline/' . rawurlencode($id) . '.' . $this->type . $qs;
-        
-		return $this->objectify( $this->process($request) );
-	}
+	function userTimeline($id=false, $user_id=false, $screen_name = false, $since_id=false, $max_id = false, $count=20, $page=false)
+		{
+		    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+		        return false;
+
+		    $args = array();
+		    if( $user_id )
+		        $args['user_id'] = $user_id;
+		    if( $screen_name )
+		        $args['screen_name'] = $screen_name;
+		    if( $since_id )
+		        $args['since_id'] = (int) $since_id;
+		    if( $max_id )
+		        $args['max_id'] = (int) $max_id;
+		    if( $count )
+		        $args['count'] = (int) $count;
+		    if( $page )
+		        $args['page'] = (int) $page;
+
+		    $qs = '';
+		    if( !empty( $args ) )
+		        $qs = $this->_glue( $args );
+
+	        if( $id === false )
+	            $request = 'http://twitter.com/statuses/user_timeline.' . $this->type . $qs;
+	        else
+	            $request = 'http://twitter.com/statuses/user_timeline/' . rawurlencode($id) . '.' . $this->type . $qs;
+
+			return $this->objectify( $this->process($request) );
+		}
 	
 	/**
 	 * Send an authenticated request to Twitter for the timeline of authenticating users friends. 
