@@ -709,7 +709,7 @@ function friendsTimeline( $id = false, $since_id = false, $max_id = false, $coun
 	        return false;
 	        
 		$request = 'http://twitter.com/help/test.' . $this->type;
-		if( $this->objectify( $this->process($request) ) == 'ok' )
+		if( $this->objectify( $this->process($request) ) == '"ok"' )
 			return true;
 		
 		return false;
