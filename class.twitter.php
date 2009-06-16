@@ -481,21 +481,23 @@ class twitter{
 	 * @deprecated $count
 	 * @return string
 	 */
-	function directMessages( $since = false, $count = null, $since_id = false, $page = false )
+	function directMessages( $since_id = false, $max_id = false, $count = null, $page = false )
 	{
 	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
 	        return false;
 	        
-        $qs='?';
         $qsparams = array();
-        if( $since !== false )
-            $qsparams['since'] = rawurlencode($since);
-        if( $since_id )
-            $qsparams['since_id'] = (int) $since_id;
-        if( $page )
-            $qsparams['page'] = (int) $page;
-            
-        $request = 'http://twitter.com/direct_messages.' . $this->type . implode( '&', $qsparams );
+		if( $since_id )
+			$qsparams['since_id'] = (int) $since_id;
+		if( $max_id )
+			$qsparams['max_id'] = (int) $max_id;
+		if( $count )
+			$qsparams['count'] = (int) $count;
+		if( $page )
+			$qsparams['page'] = (int) $page;
+          
+  		$qs = $this->_glue( $qsparams );
+        $request = 'http://twitter.com/direct_messages.' . $this->type . $qs;
 
 		return $this->objectify( $this->process($request) );
 	}
