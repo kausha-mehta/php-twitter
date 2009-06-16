@@ -128,19 +128,14 @@ class twitter{
     
 	/**
 	 * Send an unauthenticated request to Twitter for the public timeline. 
-	 * Returns the last 20 updates by default
-	 * @param boolean|integer $sinceid Returns only public statuses with an ID greater of $sinceid
+	 * Returns the last 20 updates
 	 * @return string
 	 */
-	function publicTimeline( $sinceid = false )
+	function publicTimeline()
 	{
 	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
 	        return false;
-	        
-        $qs='';
-        if( $sinceid !== false )
-            $qs = '?since_id=' . intval($sinceid);
-        $request = 'http://twitter.com/statuses/public_timeline.' . $this->type . $qs;
+        $request = 'http://twitter.com/statuses/public_timeline.' . $this->type;
 
 		return $this->objectify( $this->process($request) );
 	}
