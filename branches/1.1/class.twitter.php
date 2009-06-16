@@ -460,26 +460,24 @@ function friendsTimeline( $id = false, $since_id = false, $max_id = false, $coun
 	 * @return string
 	 */
 	function showUser( $id, $email = false, $user_id = false, $screen_name=false )
-	{
-	    if( !in_array( $this->type, array( 'xml','json' ) ) )
-	        return false;
-	    
-	    $qs = array();
-	    if( $user_id ) :
-	        $qs['user_id'] = (int) $user_id;
-	    elseif ( $screen_name ) :
-	        $qs['screen_name'] = (string) $screen_name;
-	    elseif ( $email ) :
-	        $qs['email'] = (string) $email;
-	    endif;
-	    
-	    $query_string = _glue( $qs );
-	    $id = (int) $id;
-	    
-        $request = 'http://twitter.com/users/show/' . $id . $this->type . $query_string;
-        
-		return $this->objectify( $this->process($request) );
-	}
+		{
+	      if( !in_array( $this->type, array( 'xml','json' ) ) )
+	          return false;
+
+	      if( $user_id ) :
+	          $qs = '.' . $this->type . '?user_id=' . (int) $user_id;
+	      elseif ( $screen_name ) :
+	          $qs = '.' . $this->type . '?screen_name=' . (string) $screen_name;
+	      elseif ( $email ) :
+	          $qs = '.' . $this->type . '?email=' . (string) $email;
+	      else :
+	          $qs = '/' . $id . '.' . $this->type;
+	      endif;
+
+	      $request = 'http://twitter.com/users/show' . $qs;
+
+			return $this->objectify( $this->process($request) );
+		}
 	
 	/****** Direct Messages ******/
     
