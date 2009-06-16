@@ -28,7 +28,7 @@ class twitter{
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
 	 * @var string
 	 */
-	var $user_agent='';
+	var $user_agent='php-twitter/1.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
