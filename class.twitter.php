@@ -753,8 +753,14 @@ function friendsTimeline( $id = false, $since_id = false, $max_id = false, $coun
 		$ch = curl_init($url);
 		if($postargs !== false)
 		{
-			curl_setopt ($ch, CURLOPT_POST, true);
-			curl_setopt ($ch, CURLOPT_POSTFIELDS, $postargs);
+				$postdata = array();
+				foreach($postargs as $key => $value)
+				{
+					$postdata[] = $key . '=' . $value;
+				}
+				$postdata = implode('&', $postdata);
+				curl_setopt ($ch, CURLOPT_POST, true);
+				curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata);
         }
         
 		if($this->username !== false && $this->password !== false)
