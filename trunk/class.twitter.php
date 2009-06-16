@@ -749,8 +749,14 @@ class twitter{
 		$ch = curl_init($url);
 		if($postargs !== false)
 		{
+			$postdata = array();
+			foreach($postargs as $key => $value)
+			{
+				$postdata[] = $key . '=' . $value;
+			}
+			$postdata = implode('&', $postdata);
 			curl_setopt ($ch, CURLOPT_POST, true);
-			curl_setopt ($ch, CURLOPT_POSTFIELDS, $postargs);
+			curl_setopt ($ch, CURLOPT_POSTFIELDS, $postdata);
         }
         
 		if($this->username !== false && $this->password !== false)
