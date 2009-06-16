@@ -193,26 +193,33 @@ class twitter{
 	 * @param boolean|integer Optional. Specifies the page number of the resultset in groups of 20.
 	 * @return string
 	 */
-	function friendsTimeline( $id = false, $since = false, $since_id = false, $count = 20, $page = false )
+function friendsTimeline( $id = false, $since_id = false, $max_id = false, $count = false, $page = false )
 	{
-	    $qs = array();
-	    if( $since )
-	        $qs['since'] = $since;
+	    if( !in_array( $this->type, array( 'xml','json','rss','atom' ) ) )
+	        return false;
+
+	    $args = array();
+	    if( $id )
+	        $args['id'] = $id;
 	    if( $since_id )
-	        $qs['since_id'] = $since_id;
+	        $args['since_id'] = (int) $since_id;
+	    if( $max_id )
+	        $args['max_id'] = (int) $max_id;
 	    if( $count )
-	    {
-	        if( $count > 200 )
-	            $count = 200;
-	            
-	        $qs['count'] = $count;
-        }
+	        $args['count'] = (int) $count;
 	    if( $page )
-	        $qs['page'] = $page;
-	        
-	    $query_string = _glue( $qs );
-	    $request = 'http://twitter.com/statuses/friends_timeline.' . $this->type . $query_string;
-	    return $this->objectify( $this->request( $request) );
+	        $args['page'] = (int) $page;
+
+	    $qs = '';
+	    if( !empty( $args ) )
+	        $qs = $this->_glue( $args );
+
+        if( $id === false )
+            $request = 'http://twitter.com/statuses/friends_timeline.' . $this->type . $qs;
+        else
+            $request = 'http://twitter.com/statuses/friends_timeline/' . rawurlencode($id) . '.' . $this->type . $qs;
+
+		return $this->objectify( $this->process($request) );
 	}
     
 	/**
