@@ -457,21 +457,21 @@ class twitter{
 	 */
 	function showUser( $id, $email = false, $user_id = false, $screen_name=false )
 	{
-	    if( !in_array( $this->type, array( 'xml','json' ) ) )
-	        return false;
-	        
-	    if( $user_id ) :
-	        $qs = '?user_id=' . (int) $user_id;
-	    elseif ( $screen_name ) :
-	        $qs = '?screen_name=' . (string) $screen_name;
-	    elseif ( $email ) :
-	        $qs = '?email=' . (string) $email;
-	    else :
-	        $qs = (int) $id;
-	    endif;
-	    
-        $request = 'http://twitter.com/users/show/' . $qs . $this->type;
-        
+      if( !in_array( $this->type, array( 'xml','json' ) ) )
+          return false;
+
+      if( $user_id ) :
+          $qs = '.' . $this->type . '?user_id=' . (int) $user_id;
+      elseif ( $screen_name ) :
+          $qs = '.' . $this->type . '?screen_name=' . (string) $screen_name;
+      elseif ( $email ) :
+          $qs = '.' . $this->type . '?email=' . (string) $email;
+      else :
+          $qs = '/' . $id . '.' . $this->type;
+      endif;
+
+      $request = 'http://twitter.com/users/show' . $qs;
+
 		return $this->objectify( $this->process($request) );
 	}
 	
