@@ -16,10 +16,11 @@ class Twitter_Search extends Twitter {
 	 * Ensure you set a user agent, whether via the constructor or by assigning a value to the property directly.
 	 * Also, if you are not running this from the Eastern timezone, be sure to set your proper timezone.
 	 *
+	 * @access public
 	 * @since 2.0
 	 * @return Twitter_Search
 	 */
-	function __construct( $url = 'http://search.twitter.com/search.', $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
+	public function __construct( $url = 'http://search.twitter.com/search.', $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
 	{
 		parent::__construct();
 		$this->api_url = $url . $this->type;
@@ -38,10 +39,11 @@ class Twitter_Search extends Twitter {
 	 *  - geocode: Returns tweets within a specified radius of lat/long coordinates. Designate as a value lat,long,rad 
 	 *  - show_user: Returns results with username prepended to tweets. Default is false
 	 *
+	 * @access public
 	 * @since 2.0
 	 * @return Twitter_Search
 	 */
-	function search( $query )
+	public function search( $query )
 	{
 		if( is_string( $query ) )
 		{
@@ -62,7 +64,14 @@ class Twitter_Search extends Twitter {
 		return $this->get( $this->api_url . $query_string );
 	}
 	
-	function __destruct() {}
+	/**
+	 * Destroys the object
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @return null
+	 */
+	public function __destruct() {}
 }
 
 class summize extends Twitter_Search {
