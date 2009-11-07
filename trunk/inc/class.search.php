@@ -65,6 +65,19 @@ class Twitter_Search extends Twitter {
 	}
 	
 	/**
+	 * Retrieves top 10 trending topics
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @return object
+	 */
+	public function trends()
+	{
+		$this->api_url = 'http://search.twitter.com/trends.' . $this->type;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
