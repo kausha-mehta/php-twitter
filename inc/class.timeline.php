@@ -192,7 +192,26 @@ class Twitter_Timeline extends Twitter {
 		return $this->_post( $this->api_url, array( 'id' => (int) $tweet_id ) );
 	}
 	
-	public function retweets()
+	public function do_retweet( $tweet_id )
+	{
+		# COMING SOON TO TWITTER
+	}
+	public function get_retweets( $tweet_id )
+	{
+		# COMING SOON TO TWITTER
+	}
+	
+	public function my_retweets()
+	{
+		# COMING SOON TO TWITTER
+	}
+	
+	public function has_retweets()
+	{
+		# COMING SOON TO TWITTER
+	}
+	
+	public function friends_retweets()
 	{
 		# COMING SOON TO TWITTER
 	}
