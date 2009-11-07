@@ -178,6 +178,20 @@ class Twitter_Timeline extends Twitter {
 		return $this->_post( $this->api_url, $tweet );
 	}
 	
+	/**
+	 * Deletes a tweet by ID
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param integer $tweet_id 
+	 * @return object
+	 */
+	public function delete_tweet( $tweet_id )
+	{
+		$this->api_url = 'http://twitter.com/statuses/destroy/' . (int) $tweet_id . $this->type;
+		return $this->_post( $this->api_url, array( 'id' => (int) $tweet_id ) );
+	}
+	
 	public function retweets()
 	{
 		# COMING SOON TO TWITTER
