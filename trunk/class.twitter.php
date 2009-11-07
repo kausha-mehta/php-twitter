@@ -5,55 +5,67 @@ class Twitter {
 	 * Authenticating Twitter user
 	 * @var string
 	 */
-	var $username;
+	public var $username;
 	
 	/**
 	 * Autenticating Twitter user password
 	 * @var string
 	 */
-	var $password;
+	public var $password;
 	
 	/**
 	 * Sets the URL to be used for the API requests
 	 * @var string
 	 */
-	var $api_url;
+	public var $api_url;
 
 	/**
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
 	 * @var string
 	 */
-	var $user_agent;
+	public var $user_agent;
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
 	 * @var string
 	 */
-	var $type;
+	public var $type;
 
 	/**
 	 * It is unclear if Twitter header preferences are standardized, but I would suggest using them.
 	 * More discussion at http://tinyurl.com/3xtx66
 	 * @var array
 	 */
-	var $headers;
+	public var $headers;
 	
 	/**
 	 * @var boolean
 	 */
-	 var $suppress_response_code;
+	 public var $suppress_response_code;
 	 
 	/**
 	 * @var boolean
 	 */
-	 var $debug;
+	 public var $debug;
 	
 	/**
 	 * @var string
 	 */
-	 var $timezone;
+	 public var $timezone;
 	
-	function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false )
+	/**
+	 * Setup Twitter client connection details.
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $username Twitter username
+	 * @param string $password Twitter password
+	 * @param string $user_agent Unique identifying user agent that identifies the App you're building. Include an email address that Twitter can use to reach you
+	 * @param array $headers Additional headers to be sent to Twitter as key/value pairs
+	 * @param string $timezone Formatted like America/New_York
+	 * @return Twitter
+	 */
+	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York' )
 	{		
 		require_once('inc/backpress/functions.core.php');
 		require_once('inc/backpress/functions.formatting.php');
@@ -74,7 +86,15 @@ class Twitter {
 		$this->http = new WP_Http();
 	}
 	
-	function _glue( $array )
+	/**
+	 * Constructs a URL encoded query string from an array of key/value pairs
+	 *
+	 * @access protected
+	 * @since 2.0
+	 * @param array $array query string key/value pairs
+	 * @return string
+	 */
+	protected function _glue( $array )
 	{
 	    $query_string = '';
 	    foreach( $array as $key => $val ) :
@@ -84,15 +104,39 @@ class Twitter {
 	    return '?' . substr( $query_string, 0, strlen( $query_string )-1 );
 	}
 	
-	function get( $url )
+	/**
+	 * Performs an HTTP GET request
+	 *
+	 * @access protected
+	 * @since 2.0
+	 * @param string $url URI resource.
+	 * @return object
+	 */
+	protected function _get( $url )
 	{
 		return $this->http->get( $url, array('user-agent'=>$this->user_agent) );
 	}
 	
-	function post( $url, $data )
+	/**
+	 * Performs an HTTP POST request
+	 *
+	 * @access protected
+	 * @since 2.0
+	 * @param string $url URI resource.
+	 * @param array $data POSTdata in key/value pairs
+	 * @return object
+	 */
+	protected function _post( $url, $data )
 	{
 		
 	}
 	
-	function __destruct() {}
+	/**
+	 * Destroys the object
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @return null
+	 */
+	public function __destruct() {}
 }
