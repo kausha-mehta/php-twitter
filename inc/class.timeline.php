@@ -169,6 +169,11 @@ class Twitter_Timeline extends Twitter {
 	 */
 	public function post_tweet( $tweet )
 	{
+		if( !is_array( $tweet ) )
+		{
+			$newtweet = array('status' => $tweet );
+			$tweet = $newtweet;
+		}
 		$this->api_url = 'http://twitter.com/statuses/update.' . $this->type;
 		return $this->_post( $this->api_url, $tweet );
 	}
