@@ -22,7 +22,7 @@ class Twitter_Search extends Twitter {
 	 */
 	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
 	{
-		parent::__construct();
+		parent::__construct($username, $password, $user_agent, $headers, $timezone);
 	}
 	
 	/**
