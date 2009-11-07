@@ -1,5 +1,4 @@
 <?php
-
 class Twitter {
 	
 	/**
@@ -54,9 +53,10 @@ class Twitter {
 	 */
 	 var $timezone;
 	
-	function __construct( $username, $password, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false )
-	{
+	function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false )
+	{		
 		require_once('inc/backpress/functions.core.php');
+		require_once('inc/backpress/functions.formatting.php');
 		require_once('inc/backpress/functions.bp-options.php');
 		require_once('inc/backpress/functions.plugin-api.php');
 		require_once('inc/backpress/class.wp-http.php');
@@ -74,9 +74,19 @@ class Twitter {
 		$this->http = new WP_Http();
 	}
 	
+	function _glue( $array )
+	{
+	    $query_string = '';
+	    foreach( $array as $key => $val ) :
+	        $query_string .= $key . '=' . rawurlencode( $val ) . '&';
+	    endforeach;
+	    
+	    return '?' . substr( $query_string, 0, strlen( $query_string )-1 );
+	}
+	
 	function get( $url )
 	{
-		
+		return $this->http->get( $url, array('user-agent'=>$this->user_agent) );
 	}
 	
 	function post( $url, $data )
