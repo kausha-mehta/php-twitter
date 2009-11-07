@@ -61,7 +61,7 @@ class Twitter_Search extends Twitter {
 		// Limit query to 140 URL encoded charachters per Twitter
 		$query_string = substr( $this->_glue( $args ), 0, 140 );
 		
-		return $this->get( $this->api_url . $query_string );
+		return $this->_get( $this->api_url . $query_string );
 	}
 	
 	/**
