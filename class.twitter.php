@@ -115,7 +115,10 @@ class Twitter {
 	protected function _get( $url )
 	{
 		$json = $this->http->get( $url, array('user-agent'=>$this->user_agent) );
-		return (object) json_decode( $json['body'] );
+		if( $json['body'] )
+			return (object) json_decode( $json['body'] );
+		else
+			return $json;
 	}
 	
 	/**
