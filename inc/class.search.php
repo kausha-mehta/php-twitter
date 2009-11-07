@@ -40,7 +40,7 @@ class Twitter_Search extends Twitter {
 	 *
 	 * @access public
 	 * @since 2.0
-	 * @return Twitter_Search
+	 * @return object
 	 */
 	public function search( $query )
 	{
