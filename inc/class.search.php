@@ -121,7 +121,3 @@ class Twitter_Search extends Twitter {
 class summize extends Twitter_Search {
 	# Deprecated - Use Twitter_Search class instead
 }
-
-
-$twitter = new Twitter_Search( 'technosailor', 'jip33Bart' );
-print_r( $twitter->trends('weekly', true) );
