@@ -114,7 +114,8 @@ class Twitter {
 	 */
 	protected function _get( $url )
 	{
-		return (object) $this->http->get( $url, array('user-agent'=>$this->user_agent) );
+		$json = $this->http->get( $url, array('user-agent'=>$this->user_agent) );
+		return json_decode( $json['body'] );
 	}
 	
 	/**

@@ -69,11 +69,42 @@ class Twitter_Search extends Twitter {
 	 *
 	 * @access public
 	 * @since 2.0
+	 * @param null/string $scope current/daily/weekly
+	 * @param boolean $include_hashtags determines whether to filter out hashtags in results. Default is false
+	 * @param boolean/string $date a formatted string like YYYY-MM-DD. If omitted, the current date is used
 	 * @return object
 	 */
-	public function trends()
+	public function trends( $scope = 'current', $include_hashtags = false, $date = false )
 	{
-		$this->api_url = 'http://search.twitter.com/trends.' . $this->type;
+		switch( $scope )
+		{
+			case 'current' :
+				$url_scope = '/current';
+				$qs = array();
+				$qs['exclude'] = 'hashtags';
+				break;
+			case 'daily' :
+				$url_scope = '/daily';
+				$qs = array();
+				if( $include_hashtags )
+					$qs['exclude'] = 'hashtags';
+				if( !$date )
+					$qs['date'] = date('Y-m-d');
+				break;
+			case 'weekly' :
+				$url_scope = '/weekly';
+				if( $include_hashtags )
+					$qs['exclude'] = 'hashtags';
+				if( !$date )
+					$qs['date'] = date('Y-m-d');
+				break;
+			default :
+				$url_scope = '';
+				break;
+		}
+		$this->api_url = 'http://search.twitter.com/trends' . $url_scope . '.' . $this->type;
+		if( $qs )
+			$this->api_url = $this->api_url . $this->_glue( $qs );
 		return $this->_get( $this->api_url );
 	}
 	
@@ -90,3 +121,7 @@ class Twitter_Search extends Twitter {
 class summize extends Twitter_Search {
 	# Deprecated - Use Twitter_Search class instead
 }
+
+
+$twitter = new Twitter_Search( 'technosailor', 'jip33Bart' );
+print_r( $twitter->trends('weekly', true) );
