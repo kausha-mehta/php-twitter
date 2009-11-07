@@ -5,53 +5,53 @@ class Twitter {
 	 * Authenticating Twitter user
 	 * @var string
 	 */
-	public var $username;
+	public $username;
 	
 	/**
 	 * Autenticating Twitter user password
 	 * @var string
 	 */
-	public var $password;
+	public $password;
 	
 	/**
 	 * Sets the URL to be used for the API requests
 	 * @var string
 	 */
-	public var $api_url;
+	public $api_url;
 
 	/**
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
 	 * @var string
 	 */
-	public var $user_agent;
+	public $user_agent;
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
 	 * @var string
 	 */
-	public var $type;
+	public $type;
 
 	/**
 	 * It is unclear if Twitter header preferences are standardized, but I would suggest using them.
 	 * More discussion at http://tinyurl.com/3xtx66
 	 * @var array
 	 */
-	public var $headers;
+	public $headers;
 	
 	/**
 	 * @var boolean
 	 */
-	 public var $suppress_response_code;
+	 public $suppress_response_code;
 	 
 	/**
 	 * @var boolean
 	 */
-	 public var $debug;
+	 public $debug;
 	
 	/**
 	 * @var string
 	 */
-	 public var $timezone;
+	 public $timezone;
 	
 	/**
 	 * Setup Twitter client connection details.
@@ -114,7 +114,7 @@ class Twitter {
 	 */
 	protected function _get( $url )
 	{
-		return $this->http->get( $url, array('user-agent'=>$this->user_agent) );
+		return (object) $this->http->get( $url, array('user-agent'=>$this->user_agent) );
 	}
 	
 	/**
