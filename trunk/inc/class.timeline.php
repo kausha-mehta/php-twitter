@@ -25,7 +25,7 @@ class Twitter_Timeline extends Twitter {
 	}
 
 	/**
-	 * Send a request for timeline statuses
+	 * Send a request for a timeline
 	 *
 	 * @access public
 	 * @since 2.0
@@ -139,6 +139,20 @@ class Twitter_Timeline extends Twitter {
 	public function get_mentions()
 	{
 		return get_timeline( 'mentions' );
+	}
+	
+	/**
+	 * Retrieve a single tweet by ID
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param integer $tweet_id 
+	 * @return object
+	 */
+	public function get_tweet( $tweet_id )
+	{
+		$this->api_url = 'http://twitter.com/statuses/show/' . (int) $tweet_id . $this->type;
+		return $this->_get( $this->api_url );
 	}
 	
 	public function retweets()
