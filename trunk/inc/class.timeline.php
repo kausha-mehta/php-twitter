@@ -51,6 +51,7 @@ class Twitter_Timeline extends Twitter {
 		$qs = array();
 		switch( $scope )
 		{
+			case 'home' :							#COMING SOON TO TWITTER
 			case 'friends' :
 				$url_scope = '/friends_timeline';
 				if( $since_id )
@@ -138,6 +139,11 @@ class Twitter_Timeline extends Twitter {
 	public function get_mentions()
 	{
 		return get_timeline( 'mentions' );
+	}
+	
+	public function retweets()
+	{
+		# COMING SOON TO TWITTER
 	}
 	
 	/**
