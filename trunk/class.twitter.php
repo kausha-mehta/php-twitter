@@ -43,9 +43,19 @@ class Twitter {
 	 */
 	 var $debug;
 	
-	function __construct( $username, $password, $user_agent = null, $headers = null, $debug = false )
+	/**
+	 * @var string
+	 */
+	 var $timezone;
+	
+	function __construct( $username, $password, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false )
 	{
-		require_once( 'inc/class.http.php' );
+		require_once('inc/backpress/functions.core.php');
+		require_once('inc/backpress/functions.bp-options.php');
+		require_once('inc/backpress/functions.plugin-api.php');
+		require_once('inc/backpress/class.wp-http.php');
+		require_once('inc/backpress/class.wp-error.php');
+		
 		$this->username = $username;
 		$this->password = $password;
 		$this->user_agent = ( $user_agent ) ? $user_agent : 'php-twitter/1.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
@@ -53,7 +63,18 @@ class Twitter {
 		$this->debug = ( $debug ) ? true : false;
 		$this->suppress_response_code = false;
 		$this->type = 'json';
+		$this->timezone = date_default_timezone_set( $timezone );
 		$this->http = new WP_Http();
+	}
+	
+	function get( $url )
+	{
+		
+	}
+	
+	function post( $url, $data )
+	{
+		
 	}
 	
 	function __destruct() {}
