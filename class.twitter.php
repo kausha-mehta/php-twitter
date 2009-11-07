@@ -13,6 +13,12 @@ class Twitter {
 	 * @var string
 	 */
 	var $password;
+	
+	/**
+	 * Sets the URL to be used for the API requests
+	 * @var string
+	 */
+	var $api_url;
 
 	/**
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
@@ -58,6 +64,7 @@ class Twitter {
 		
 		$this->username = $username;
 		$this->password = $password;
+		$this->api_url = '';
 		$this->user_agent = ( $user_agent ) ? $user_agent : 'php-twitter/1.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
 		$this->headers = ( $headers ) ? $headers : array('Expect:', 'X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
 		$this->debug = ( $debug ) ? true : false;
