@@ -19,9 +19,9 @@ class Twitter_Timeline extends Twitter {
 	 * @since 2.0
 	 * @return Twitter_Timeline
 	 */
-	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
+	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York')
 	{
-		parent::__construct();
+		parent::__construct($username, $password, $user_agent, $headers, $timezone);
 	}
 
 	/**
@@ -153,6 +153,25 @@ class Twitter_Timeline extends Twitter {
 	{
 		$this->api_url = 'http://twitter.com/statuses/show/' . (int) $tweet_id . $this->type;
 		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 * Post a tweet
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param array $tweet An array of key/value pairs. The only required key is 'status'
+	 *  - status: REQUIRED. Cannot exceed 140 characters. You do not need to URL encode it but status will be truncated if, after URL encoding, the status exceeds 140 charachters
+	 *  - in_reply_to_status_id: The Tweet ID being responded to. The Tweet replied to must have the authenticating Twitter user mentioned in the status
+	 *  - lat: COMING SOON. A latitude between -90.0 and +90.0
+	 *  - long: COMING SOON. A longitude between -180.0 and +180.0
+	 * @return object
+	 */
+	public function post_tweet( $tweet )
+	{
+		$tweet = (array) $tweet;
+		$this->api_url = 'http://twitter.com/statuses/update.' . $this->type;
+		return $this->_post( $this->api_url, $tweet );
 	}
 	
 	public function retweets()
