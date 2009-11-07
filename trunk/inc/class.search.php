@@ -20,10 +20,9 @@ class Twitter_Search extends Twitter {
 	 * @since 2.0
 	 * @return Twitter_Search
 	 */
-	public function __construct( $url = 'http://search.twitter.com/search.', $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
+	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false)
 	{
 		parent::__construct();
-		$this->api_url = $url . $this->type;
 	}
 	
 	/**
@@ -45,6 +44,7 @@ class Twitter_Search extends Twitter {
 	 */
 	public function search( $query )
 	{
+		$this->api_url = 'http://search.twitter.com/search.' . $this->type;
 		if( is_string( $query ) )
 		{
 			$newquery['q'] = $query;
