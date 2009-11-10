@@ -30,8 +30,8 @@ class Twitter_Lists extends Twitter {
 	 * @access public
 	 * @since 2.0
 	 * @param array $list An array of key/value pairs. The only required key is 'name'
-	 *  - name: A name for a list to create. It must be unique for the authenticating user
-	 *  - mode: Privacy settings: public or private. By default, a list is public
+	 *  - name: Required. A name for a list to create. It must be unique for the authenticating user
+	 *  - mode: Optional. Privacy settings: public or private. By default, a list is public
 	 * @return object
 	 */
 	public function create_list( $list )
@@ -45,6 +45,25 @@ class Twitter_Lists extends Twitter {
 		return $this->_post( $this->api_url, $list );
 	}
 
+	/**
+	 * Modify a list specified by List ID
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param array $list An array of key/value pairs. The only required key is 'name'
+	 *  - name: Optional. A name for a list to create. It must be unique for the authenticating user
+	 *  - mode: Optional. Privacy settings: public or private. By default, a list is public
+	 * @return object
+	 */
+	public function edit_list( $list_id, $list = array() )
+	{
+		if( !is_array( $list ) )
+			return false;
+			
+		$this->api_url = 'http://api.twitter.com/1/' . $this->username . '/lists/' .  $list_id . '.'. $this->type;
+		return $this->_post( $this->api_url, $list );
+	}
+	
 	/**
 	 * Destroys the object
 	 *
