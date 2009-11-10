@@ -163,6 +163,21 @@ class Twitter_Lists extends Twitter {
 	}
 	
 	/**
+	 *  Retrieves a list of all Lists a given Twitter member subscribes to
+	 *
+	 * @param string $twitter_user. Required: The Twitter ID of the user to find list membership of
+	 * @param integer/boolean. Optional: If supplied, paging begins when set to -1. Other INTs include the Prev/Next IDs supplied with page results
+	 * @return object
+	 **/
+	public function user_list_subscriptions( $twitter_user, $page = false )
+	{
+		$this->api_url = 'http:.//api.twitter.com/1/' . $twitter_user . '/lists/subscriptions.' . $this->type;
+		if( $cursor )
+			$this->api_url = $this->api_url . '?cursor=' . $page;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
