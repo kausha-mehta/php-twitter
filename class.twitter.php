@@ -115,6 +115,12 @@ class Twitter {
 	protected function _get( $url )
 	{
 		$json = $this->http->get( $url, array( 'headers' => $this->headers, 'user-agent' => $this->user_agent ) );
+		if( is_wp_error( $json ) )
+			return $json;
+		
+		if( $json['headers']['status'] == '500 Internal Server Error')
+			return $json;
+		
 		if( $json['body'] )
 			return (object) json_decode( $json['body'] );
 		else
@@ -133,7 +139,6 @@ class Twitter {
 	protected function _post( $url, $data )
 	{
 		$json = $this->http->post( $url, array( 'headers' => $this->headers, 'user-agent' => $this->user_agent, 'body' => $data ) );
-		
 		if( is_wp_error( $json ) )
 			return $json;
 		
