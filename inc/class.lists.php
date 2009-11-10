@@ -144,7 +144,21 @@ class Twitter_Lists extends Twitter {
 		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/' . $list . '/statuses.' . $this->type;
 		if( $query_vars )
 			$this->api_url = $this->api_url . $this->_glue( $query_vars );
-		echo $this->api_url;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 *  Retrieves a list of all Lists a given Twitter member is a part of
+	 *
+	 * @param string $twitter_user. Required: The Twitter ID of the user to find list membership of
+	 * @param integer/boolean. Optional: If supplied, paging begins when set to -1. Other INTs include the Prev/Next IDs supplied with page results
+	 * @return object
+	 **/
+	public function user_list_membership( $twitter_user, $page = false )
+	{
+		$this->api_url = 'http:.//api.twitter.com/1/' . $twitter_user . '/lists/membership.' . $this->type;
+		if( $cursor )
+			$this->api_url = $this->api_url . '?cursor=' . $page;
 		return $this->_get( $this->api_url );
 	}
 	
