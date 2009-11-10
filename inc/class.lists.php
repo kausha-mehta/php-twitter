@@ -109,6 +109,44 @@ class Twitter_Lists extends Twitter {
 		$this->api_url = 'http://api.twitter.com/1/' . $this->username . '/lists/'. $list_id . '.' . $this->type;
 		return $this->_post( $this->api_url, array( 'id' => $list_id, '_method' => 'DELETE') );
 	}
+
+	/**
+	 * Send a request for a List timeline
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $twitter_user. Required: The twitter handle that owns a given list
+	 * @param string $list. Required: The slug of a list to be retrieved.
+	 * @param array $args Parameters that can be passed in key/pair format. All are optional. Some only apply to certain scopes.
+	 *  - since_id: INT. Only tweets after the specified Status ID are returned
+	 *  - max_id: INT. Only tweets up to a specified Status ID are returned
+	 *  - per_page: INT. Number of tweets to return per page. Defaults to 20.
+	 *  - page: INT: Paged result set to display.
+	 * @return object
+	 */	
+	public function get_list_timeline( $twitter_user, $list, $args = array() )
+	{
+		extract( $args, EXTR_SKIP );
+		$defaults = array(
+			'per_page'	=> 200,
+			'page'		=> 1
+			);
+		if( $since_id )
+			$qs['since_id'] = (int) $since_id;
+		if( $max_id )
+			$qs['max_id'] = (int) $max_id;
+		if( $count )
+			$qs['per_page'] = ( $count > 200 ) ? 200 : (int) $count;
+		if( $page )
+			$qs['page'] = (int) $page;
+		$query_vars = wp_parse_args( $qs, $defaults );
+		
+		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/' . $list . '/statuses.' . $this->type;
+		if( $query_vars )
+			$this->api_url = $this->api_url . $this->_glue( $query_vars );
+		echo $this->api_url;
+		return $this->_get( $this->api_url );
+	}
 	
 	/**
 	 * Destroys the object
