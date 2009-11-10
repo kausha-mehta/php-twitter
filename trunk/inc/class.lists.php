@@ -86,15 +86,28 @@ class Twitter_Lists extends Twitter {
 	 *
 	 * @access public
 	 * @since 2.0
+	 * @param string $twitter_user: Required. The twitter handle for a user
 	 * @param string $list_id: Required. The slug (or ID) of a given Twitter list
-	 * @param integer/boolean $page: Optional. Whether to return results in paged sets of 20. -1 initializes paging. A Tweet ID provided in paged results provides "next" "previous"
 	 * @return object
 	 */
 	public function get_list( $twitter_user, $list_id )
 	{		
 		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/'. $list_id . '.' . $this->type;
-		echo $this->api_url;
 		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 * Deletes a tweet given a slug.
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $list_id: Required. The slug (or ID) of a given Twitter list
+	 * @return object
+	 */
+	public function delete_list( $list_id )
+	{		
+		$this->api_url = 'http://api.twitter.com/1/' . $this->username . '/lists/'. $list_id . '.' . $this->type;
+		return $this->_post( $this->api_url, array( 'id' => $list_id, '_method' => 'DELETE') );
 	}
 	
 	/**
