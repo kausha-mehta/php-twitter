@@ -65,13 +65,12 @@ class Twitter_Lists extends Twitter {
 	}
 	
 	/**
-	 * Modify a list specified by List ID
+	 * Retrieve a list of Lists, pardon the pun, for a given user. Private lists are only shown if owned by the authenticating user
 	 *
 	 * @access public
 	 * @since 2.0
-	 * @param array $list An array of key/value pairs. The only required key is 'name'
-	 *  - name: Optional. A name for a list to create. It must be unique for the authenticating user
-	 *  - mode: Optional. Privacy settings: public or private. By default, a list is public
+	 * @param string $twitter_user: Required. The Twitter name of a user to retrieve lists for
+	 * @param integer/boolean $page: Optional. Whether to return results in paged sets of 20. -1 initializes paging. A Tweet ID provided in paged results provides "next" "previous"
 	 * @return object
 	 */
 	public function get_lists( $twitter_user, $page=false )
@@ -79,6 +78,22 @@ class Twitter_Lists extends Twitter {
 		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists.'. $this->type;
 		if( $page )
 			$this->api_url = $this->api_url . '?cursor=' . (int) $page;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 * Retrieves a list by slug. A private list is only returned if owned by the authenticating user.
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $list_id: Required. The slug (or ID) of a given Twitter list
+	 * @param integer/boolean $page: Optional. Whether to return results in paged sets of 20. -1 initializes paging. A Tweet ID provided in paged results provides "next" "previous"
+	 * @return object
+	 */
+	public function get_list( $twitter_user, $list_id )
+	{		
+		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/'. $list_id . '.' . $this->type;
+		echo $this->api_url;
 		return $this->_get( $this->api_url );
 	}
 	
