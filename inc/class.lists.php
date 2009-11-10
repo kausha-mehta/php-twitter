@@ -25,6 +25,27 @@ class Twitter_Lists extends Twitter {
 	}
 
 	/**
+	 * Create a new list
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param array $list An array of key/value pairs. The only required key is 'name'
+	 *  - name: A name for a list to create. It must be unique for the authenticating user
+	 *  - mode: Privacy settings: public or private. By default, a list is public
+	 * @return object
+	 */
+	public function create_list( $list )
+	{
+		if( !is_array( $list ) )
+		{
+			$newlist = array('name' => $list );
+			$list = $newlist;
+		}
+		$this->api_url = 'http://api.twitter.com/1/user/lists.' . $this->type;
+		return $this->_post( $this->api_url, $list );
+	}
+
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
