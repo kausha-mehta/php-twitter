@@ -185,7 +185,7 @@ class Twitter_Lists extends Twitter {
 	 * @param integer/boolean $page. Optional.
 	 * @return object
 	 */
-	public function get_list_members( $list_owner, $list_id, $page = false )
+	public function get_members( $list_owner, $list_id, $page = false )
 	{
 		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members.' . $this->type;
 		if( $page )
@@ -200,7 +200,7 @@ class Twitter_Lists extends Twitter {
 	 * @param integer $twitter_id. Required.
 	 * @return object
 	 */
-	public function add_list_member( $list_id, $user_id )
+	public function add_member( $list_id, $user_id )
 	{
 		$this->api_url = 'http://api.twitter.com/1/' . $this->username . '/' . $list_id . '/members.' . $this->type;
 		return $this->_post( $this->api_url, array('list_id' => (string) $list_id, 'id' => (int) $user_id ) );
@@ -230,7 +230,67 @@ class Twitter_Lists extends Twitter {
 	public function is_member( $twitter_id, $list_owner, $list_id )
 	{
 		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members/' . (int) $twitter_id . '.' . $this->type;
-		$exists = $this->_get( $this->api_url;
+		$exists = $this->_get( $this->api_url );
+		if( is_wp_error( $exists ) || !$exists) )
+			return false;
+		
+		return true;
+	}
+	
+	/**
+	 * Retrieves a list of all subscribers to a specific list
+	 *
+	 * @param string $list_owner. Required
+	 * @param string $list_id. Required
+	 * @param integer/boolean $page. Optional.
+	 * @return object
+	 */
+	public function get_subscribers( $list_owner, $list_id, $page = false )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/subscribers.' . $this->type;
+		if( $page )
+			$this->api_url = $this->api_url . '?cursor=' . $page;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 * Authenticating user subscribes to a list.
+	 *
+	 * @param string $list_id. Required
+	 * @param string $list_owner. Required.
+	 * @return object
+	 */
+	public function subscribe( $list_id, $list_owner )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/subscribers.' . $this->type;
+		return $this->_post( $this->api_url, array('list_id' => (string) $list_id ) );
+	}
+	
+	/**
+	 * Authenticating user unsubscribes to a list.
+	 *
+	 * @param string $list_id. Required
+	 * @param string $list_owner. Required.
+	 * @return object
+	 */
+	public function unsubscribe( $list_id, $list_owner )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members.' . $this->type;
+		return $this->_post( $this->api_url, array('list_id' => (string) $list_id, '_method' => 'DELETE' ) );
+	}
+	
+	/**
+	 * Determines if a twitter user is a subscriber to the specified list
+	 *
+	 * @param integer $twitter_id. Required. The twitter name of a user to check
+	 * @param string $list_owner. Required. The twitter name of the list owner
+	 * @param string $list_id. Required. The slug of the list to check
+	 * @return boolean
+	 **/
+	public function is_subscriber( $twitter_id, $list_owner, $list_id )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members/' . (int) $twitter_id . '.' . $this->type;
+		$exists = $this->_get( $this->api_url );
 		if( is_wp_error( $exists ) || !$exists) )
 			return false;
 		
