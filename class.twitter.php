@@ -139,7 +139,7 @@ class Twitter {
 	 * @param array $data POSTdata in key/value pairs
 	 * @return object
 	 */
-	protected function _post( $url, $data )
+	protected function _post( $url, $data = array() )
 	{
 		$json = $this->http->post( $url, array( 'headers' => $this->headers, 'user-agent' => $this->user_agent, 'body' => $data ) );
 		if( is_wp_error( $json ) )
