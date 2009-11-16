@@ -49,6 +49,27 @@ class Twitter_Friends extends Twitter {
 		$this->api_url = 'http://twitter.com/friendships/create.' . $this->type . $this->_glue( $data );
 		return $this->_post( $this->api_url );
 	}
+	
+	/**
+	 * Request to unfollow a designated user
+	 * 
+	 * Authenticating user unfollows another twitter user.
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param integer/string $user_id. Required the ID or screen name of the Twitter user to follow
+	 * @return object
+	 **/
+	public function unfollow( $user_id )
+	{
+		if( is_int( $user_id) )
+			$data['user_id'] = $user_id;
+		else
+			$data['screen_name'] = (string) $user_id;
+			
+		$this->api_url = 'http://twitter.com/friendships/destroy.' . $this->type . $this->_glue( $data );
+		return $this->_post( $this->api_url );
+	}
 
 	/**
 	 * Destroys the object
