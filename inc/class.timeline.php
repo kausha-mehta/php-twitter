@@ -53,7 +53,7 @@ class Twitter_Timeline extends Twitter {
 		{
 			case 'home' :							#COMING SOON TO TWITTER
 			case 'friends' :
-				$url_scope = '/friends_timeline';
+				$this->api_url = 'http://twitter.com/statuses/friends_timeline.' . $this->type;
 				if( $since_id )
 					$qs['since_id'] = (int) $since_id;
 				if( $max_id )
@@ -65,6 +65,7 @@ class Twitter_Timeline extends Twitter {
 				$query_vars = wp_parse_args( $qs, $defaults );
 				break;
 			case 'user' :
+				$this->api_url = 'http://twitter.com/statuses/user_timeline.' . $this->type;
 				$url_scope = '/user_timeline';
 				if( $id )
 					$qs['id'] = $id;
@@ -83,7 +84,19 @@ class Twitter_Timeline extends Twitter {
 				$query_vars = wp_parse_args( $qs, $defaults );
 				break;
 			case 'mentions' :
-				$url_scope = '/mentions';
+				$this->api_url = 'http://twitter.com/statuses/mentions.' . $this->type;
+				if( $since_id )
+					$qs['since_id'] = (int) $since_id;
+				if( $max_id )
+					$qs['max_id'] = (int) $max_id;
+				if( $count )
+					$qs['count'] = ( $count > 200 ) ? 200 : (int) $count;
+				if( $page )
+					$qs['page'] = (int) $page;
+				$query_vars = wp_parse_args( $qs, $defaults );
+				break;
+			case 'dm' :
+				$this->api_url = 'http://twitter.com/direct_mesages.' . $this->type;
 				if( $since_id )
 					$qs['since_id'] = (int) $since_id;
 				if( $max_id )
@@ -96,10 +109,9 @@ class Twitter_Timeline extends Twitter {
 				break;
 			case 'public' :
 			default :
-				$url_scope = '/public_timeline';
+				$this->api_url = 'http://twitter.com/statuses/public_timeline.' . $this->type;
 				break;
 		}
-		$this->api_url = 'http://twitter.com/statuses' . $url_scope . '.' . $this->type;
 		if( $query_vars )
 			$this->api_url = $this->api_url . $this->_glue( $query_vars );
 		return $this->_get( $this->api_url );
