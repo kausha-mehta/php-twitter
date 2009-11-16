@@ -100,5 +100,22 @@ class Twitter_Dm extends Twitter {
 		return $this->_post( $this->api_url, $data );
 	}
 	
+	/**
+	 * Delete a DM
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param integer $dmid. Required. Specified ID of DM must be sent to authenticating user.
+	 * @return object
+	 **/
+	public function delete_dm( $dmid )
+	{
+		if( !is_int( $dmid ) )
+			return false;
+			
+		$this->api_url = 'http://twitter.com/direct_messages/' . $dmid . '.' . $this->type;
+		return $this->_post( $this->api_url, array( 'id' => $dmid ) );
+	}
+	
 	public function __destruct() {}
 }
