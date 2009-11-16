@@ -107,6 +107,18 @@ class Twitter_Timeline extends Twitter {
 					$qs['page'] = (int) $page;
 				$query_vars = wp_parse_args( $qs, $defaults );
 				break;
+			case 'dmsent' :
+				$this->api_url = 'http://twitter.com/direct_mesages/sent.' . $this->type;
+				if( $since_id )
+					$qs['since_id'] = (int) $since_id;
+				if( $max_id )
+					$qs['max_id'] = (int) $max_id;
+				if( $count )
+					$qs['count'] = ( $count > 200 ) ? 200 : (int) $count;
+				if( $page )
+					$qs['page'] = (int) $page;
+				$query_vars = wp_parse_args( $qs, $defaults );
+				break;
 			case 'public' :
 			default :
 				$this->api_url = 'http://twitter.com/statuses/public_timeline.' . $this->type;
