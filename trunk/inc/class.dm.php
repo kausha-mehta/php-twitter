@@ -41,8 +41,39 @@ class Twitter_Dm extends Twitter {
 	{
 		if( !class_exists('Twitter_Timeline') )
 			require('class.timeline.php');
-			
+		
+		$defaults = array(
+			'count'	=> 20
+			);
+		$args = wp_parse_args( $defaults, $args );
+		
 		return Twitter_Timeline::get_timeline( 'dm', $args )
+	}
+	
+	/**
+	 * Get a listing of direct messages sent by the authenticating user
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $scope public for public timeline, user for user timeline, mentions for @ replies
+	 * @param array $args Parameters that can be passed in key/pair format. All are optional. Some only apply to certain scopes.
+	 *  - since_id: INT. Only tweets after the specified Status ID are returned
+	 *  - max_id: INT. Only tweets up to a specified Status ID are returned
+	 *  - count: INT. Number of tweets to return. Defaults to 20.
+	 *  - page: INT: Paged result set to display.
+	 * @return object
+	 */
+	public function sent_dms( $args = array() )
+	{
+		if( !class_exists('Twitter_Timeline') )
+			require('class.timeline.php');
+		
+		$defaults = array(
+			'count'	=> 20
+			);
+		$args = wp_parse_args( $defaults, $args );
+		
+		return Twitter_Timeline::get_timeline( 'dmsent', $args )
 	}
 	
 	public function __destruct() {}
