@@ -194,6 +194,19 @@ class Twitter_Lists extends Twitter {
 	}
 	
 	/**
+	 * Adds a Twitter user to a list owned by the authenticating user.
+	 *
+	 * @param string $list_id. Required
+	 * @param integer $twitter_id. Required.
+	 * @return object
+	 */
+	public function add_list_member( $list_id, $user_id )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $this->username . '/' . $list_id . '/members.' . $this->type;
+		return $this->_post( $this->api_url, array('list_id' => (string) $list_id, 'id' => (int) $user_id ) );
+	}
+	
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
