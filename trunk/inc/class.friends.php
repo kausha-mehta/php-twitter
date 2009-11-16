@@ -70,6 +70,32 @@ class Twitter_Friends extends Twitter {
 		$this->api_url = 'http://twitter.com/friendships/destroy.' . $this->type . $this->_glue( $data );
 		return $this->_post( $this->api_url );
 	}
+	
+	/**
+	 * Returns information about a relationship between two twitter users
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string/integer $target_user. Required
+	 * @param string/integer/boolean $source_user. Optional. If omitted or false, the $source user will be the authenticating user
+	 * @return object
+	 **/
+	public function show( $target_user, $source_user = false )
+	{
+		if( !$source_user )
+			$source_user = $this->username;
+		if( is_int( $source_user ) )
+			$data['source_id'] = $source_user;
+		else
+			$data['source_sceen_name'] = (string) $source_user;
+
+		if( is_int( $target_user) )
+			$data['target_id'] = $target_user;
+		else
+			$data['target_screen_name'] = (string) $target_user;
+		$this->api_url = 'http://twitter.com/friendships/show.' . $this->type . $this->_glue( $data );
+		return $this->_get( $data );
+	}
 
 	/**
 	 * Destroys the object
