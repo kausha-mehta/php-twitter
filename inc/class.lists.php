@@ -220,6 +220,24 @@ class Twitter_Lists extends Twitter {
 	}
 	
 	/**
+	 * Determines if a twitter user is a member of a specified list
+	 *
+	 * @param integer $twitter_id. Required. The twitter name of a user to check
+	 * @param string $list_owner. Required. The twitter name of the list owner
+	 * @param string $list_id. Required. The slug of the list to check
+	 * @return boolean
+	 **/
+	public function is_member( $twitter_id, $list_owner, $list_id )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members/' . (int) $twitter_id . '.' . $this->type;
+		$exists = $this->_get( $this->api_url;
+		if( is_wp_error( $exists ) || !$exists) )
+			return false;
+		
+		return true;
+	}
+	
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
