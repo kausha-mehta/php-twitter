@@ -67,12 +67,15 @@ class Twitter {
 	 */
 	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York' )
 	{		
-		require_once('inc/backpress/functions.core.php');
-		require_once('inc/backpress/functions.formatting.php');
-		require_once('inc/backpress/functions.bp-options.php');
-		require_once('inc/backpress/functions.plugin-api.php');
-		require_once('inc/backpress/class.wp-http.php');
-		require_once('inc/backpress/class.wp-error.php');
+		// Don't load BackPress if the class is used inside WordPress
+		if( !class_exists('WP_Query') ) :
+			require_once('inc/backpress/functions.core.php');
+			require_once('inc/backpress/functions.formatting.php');
+			require_once('inc/backpress/functions.bp-options.php');
+			require_once('inc/backpress/functions.plugin-api.php');
+			require_once('inc/backpress/class.wp-http.php');
+			require_once('inc/backpress/class.wp-error.php');
+		endif;
 		
 		$this->username = $username;
 		$this->password = $password;
