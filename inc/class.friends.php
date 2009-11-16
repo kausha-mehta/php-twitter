@@ -96,6 +96,21 @@ class Twitter_Friends extends Twitter {
 		$this->api_url = 'http://twitter.com/friendships/show.' . $this->type . $this->_glue( $data );
 		return $this->_get( $data );
 	}
+	
+	/**
+	 * Return true if User A is following User B. Wrapper around show() method
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string/integer $user_a. Required.
+	 * @param string/integer $user_b. Required.
+	 * @return boolean
+	 **/
+	public function is_friend( $user_a, $user_b )
+	{
+		$relationship = $this->show( $user_a, $user_b );
+		return $relationship->source->following;
+	}
 
 	/**
 	 * Destroys the object
