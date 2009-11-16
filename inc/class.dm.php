@@ -76,5 +76,29 @@ class Twitter_Dm extends Twitter {
 		return Twitter_Timeline::get_timeline( 'dmsent', $args )
 	}
 	
+	/**
+	 * Send a new Direct Message
+	 * 
+	 * @access public
+	 * @since 2.0
+	 * @param string/integer $recipient. Required. The username or user ID of the recipient
+	 * @param string $message. Required. Will be URL encoded and truncated to 140 charachters.
+	 * @return object
+	 **/
+	public function send_dm( $recipient, $message )
+	{
+		$data = array();
+		
+		if( is_int( $recipient ) )
+			$data['user_id'] => $recipient;
+		else
+			$data['screen_name'] => $recipient;
+		
+		$data['text'] = substr( urlencode( $message ), 0, 140 );
+		
+		$this->api_url = 'http://twitter.com/direct_messages/new.' . $this->type;
+		return $this->_post( $this->api_url, $data );
+	}
+	
 	public function __destruct() {}
 }
