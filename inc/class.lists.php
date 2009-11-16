@@ -156,8 +156,8 @@ class Twitter_Lists extends Twitter {
 	 **/
 	public function user_list_membership( $twitter_user, $page = false )
 	{
-		$this->api_url = 'http:.//api.twitter.com/1/' . $twitter_user . '/lists/membership.' . $this->type;
-		if( $cursor )
+		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/membership.' . $this->type;
+		if( $page )
 			$this->api_url = $this->api_url . '?cursor=' . $page;
 		return $this->_get( $this->api_url );
 	}
@@ -171,8 +171,24 @@ class Twitter_Lists extends Twitter {
 	 **/
 	public function user_list_subscriptions( $twitter_user, $page = false )
 	{
-		$this->api_url = 'http:.//api.twitter.com/1/' . $twitter_user . '/lists/subscriptions.' . $this->type;
-		if( $cursor )
+		$this->api_url = 'http://api.twitter.com/1/' . $twitter_user . '/lists/subscriptions.' . $this->type;
+		if( $page )
+			$this->api_url = $this->api_url . '?cursor=' . $page;
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 * Retrieves a list of all members on a given list
+	 *
+	 * @param string $list_owner. Required
+	 * @param string $list_id. Required
+	 * @param integer/boolean $page. Optional.
+	 * @return object
+	 */
+	public function get_list_members( $list_owner, $list_id, $page = false )
+	{
+		$this->api_url = 'http://api.twitter.com/1/' . $list_owner . '/' . $list_id . '/members.' . $this->type;
+		if( $page )
 			$this->api_url = $this->api_url . '?cursor=' . $page;
 		return $this->_get( $this->api_url );
 	}
