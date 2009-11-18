@@ -56,11 +56,11 @@ class Twitter_Account_Name extends Twitter {
 	/**
 	 * Ends authenticating user session. 
 	 *
-	 * @access private
+	 * @access public
 	 * @since 2.0
 	 * @return boolean
 	 **/
-	public function _end()
+	public function end()
 	{
 		$this->api_url = 'http://twitter.com/account/end_session.' . $this->type;
 		if( $this->_get( $this->api_url ) == null )
