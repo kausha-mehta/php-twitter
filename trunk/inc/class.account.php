@@ -68,6 +68,51 @@ class Twitter_Account_Name extends Twitter {
 			
 		return false;
 	}
+	
+	/**
+	 * Update message delivery device. Limited to SMS at this time
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string $device_type. Required. 'sms' or 'none'. Defaults to 'none'
+	 * @return object
+	 **/
+	public function update_device( $device_type = 'none' )
+	{
+		if( !in_array( $device_type, array('sms', 'none') ) )
+			return false;
+			
+		$data = array();
+		$data['device'] = $device_type;
+		
+		$this->api_url = 'http://twitter.com/account/update_delivery_device.' . $this->type . $this->_glue( $data );
+		return $this->_post( $this->api_url );
+	}
+	
+	/**
+	 * Update profile colors for authenticating user
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param array $args. Optional. Pass 3 charachter or 6 charachter hex color codes for each optional parameter
+	 *  - profile_background_color
+	 *  - profile_text_color
+	 *  - profile_link_color
+	 *  - profile_sidebar_color
+	 *  - profile_sidebar_border_color
+	 * @return object
+	 **/
+	public function update_colors( $args = array() )
+	{
+		$defaults = array(
+			'profile_text_color' 			=> '#000000'
+			'profile_sidebar_border_color'	=> '#000'
+			);
+		$args = wp_parse_args( $default, $args );
+		
+		$this->api_url = 'http://twitter.com/account/update_profile_colors.' . $this->type;
+		return $this->_post( $this->api_url, $args );
+	}
 
 	/**
 	 * Destroys the object
