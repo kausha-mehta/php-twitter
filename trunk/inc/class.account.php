@@ -25,6 +25,22 @@ class Twitter_Account_Name extends Twitter {
 	}
 
 	/**
+	 * Verify whether supplied Twitter credentials are correct. Not rate-limited.
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @return boolean
+	 */
+	public function verify_account()
+	{
+		$this->api_url = 'http://twitter.com/account/verify_credentials.' . $this->type;
+		if( is_wp_error( $this->_get( $this->api_url ) ) )
+			return false;
+		
+		return true;
+	}
+
+	/**
 	 * Destroys the object
 	 *
 	 * @access public
