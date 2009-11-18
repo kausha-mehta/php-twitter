@@ -52,6 +52,22 @@ class Twitter_Account_Name extends Twitter {
 		$this->api_url = 'http://twitter.com/account/rate_limit_status.' . $this->type;
 		return $this->_get( $this->api_url );
 	}
+	
+	/**
+	 * Ends authenticating user session. 
+	 *
+	 * @access private
+	 * @since 2.0
+	 * @return boolean
+	 **/
+	public function _end()
+	{
+		$this->api_url = 'http://twitter.com/account/end_session.' . $this->type;
+		if( $this->_get( $this->api_url ) == null )
+			return true;
+			
+		return false;
+	}
 
 	/**
 	 * Destroys the object
