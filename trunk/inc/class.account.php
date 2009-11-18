@@ -39,6 +39,19 @@ class Twitter_Account_Name extends Twitter {
 		
 		return true;
 	}
+	
+	/**
+	 * Return information about the authenticating users rate limit status
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @return object
+	 **/
+	public function ratelimit()
+	{
+		$this->api_url = 'http://twitter.com/account/rate_limit_status.' . $this->type;
+		return $this->_get( $this->api_url );
+	}
 
 	/**
 	 * Destroys the object
