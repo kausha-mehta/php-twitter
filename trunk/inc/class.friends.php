@@ -111,7 +111,55 @@ class Twitter_Friends extends Twitter {
 		$relationship = $this->show( $user_a, $user_b );
 		return $relationship->source->following;
 	}
-
+	
+	/**
+	 *  Returns a list of all Twitter user IDs that the specified user follows
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string/integer $twitter_user
+	 * @param boolean/integer $page
+	 * @return object
+	 */
+	public function user_follows( $twitter_user, $page = false )
+	{
+		$data = array();
+		if( is_int( $twitter_user ) )
+			$data['user_id'] = $twitter_user;
+		else
+			$data['screen_name'] = $twitter_user;
+		if( $page && is_int($page) )
+			$data['cursor'] = $page;
+		
+		$this->api_url = 'http://twitter.com/friends/ids.' . $this->type;
+		$this->api_url .= $this->_glue( $data );
+		return $this->_get( $this->api_url );
+	}
+	
+	/**
+	 *  Returns a list of all Twitter user IDs that follows the specified user
+	 *
+	 * @access public
+	 * @since 2.0
+	 * @param string/integer $twitter_user
+	 * @param boolean/integer $page
+	 * @return object
+	 */
+	public function user_followers( $twitter_user, $page = false )
+	{
+		$data = array();
+		if( is_int( $twitter_user ) )
+			$data['user_id'] = $twitter_user;
+		else
+			$data['screen_name'] = $twitter_user;
+		if( $page && is_int($page) )
+			$data['cursor'] = $page;
+		
+		$this->api_url = 'http://twitter.com/followers/ids.' . $this->type;
+		$this->api_url .= $this->_glue( $data );
+		return $this->_get( $this->api_url );
+	}
+	
 	/**
 	 * Destroys the object
 	 *
