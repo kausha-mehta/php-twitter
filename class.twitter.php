@@ -15,6 +15,36 @@ class Twitter {
 	public $password;
 	
 	/**
+	 * OAuth Consumer Key
+	 * @var string
+	 */
+	public $oauth_consumer_key;
+	
+	/**
+	 * OAuth Consumer Secret
+	 * @var string
+	 */
+	public $oauth_consumer_secret;
+	
+	/**
+	 * OAuth Consumer Key
+	 * @var string
+	 */
+	public $oauth_request_url;
+	
+	/**
+	 * OAuth Consumer Secret
+	 * @var string
+	 */
+	public $oauth_access_token_url;
+	
+	/**
+	 * OAuth Consumer Secret
+	 * @var string
+	 */
+	public $oauth_authorize_url;
+	
+	/**
 	 * Sets the URL to be used for the API requests
 	 * @var string
 	 */
