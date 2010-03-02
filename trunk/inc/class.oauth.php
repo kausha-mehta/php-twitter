@@ -7,8 +7,9 @@
  * @author Aaron Brazell
  **/
 
-require_once('../class.twitter.php');
-class Twitter_OAuth extends Twitter {
+require('inc/oauth/oauth.php');
+
+class Twitter_OAuth extends EpiTwitter {
 	/**
 	 * Setup Twitter client connection details
 	 *
@@ -19,12 +20,15 @@ class Twitter_OAuth extends Twitter {
 	 * @since 2.0
 	 * @return Twitter_Lists
 	 */
-	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York')
+	public function __construct( $oauth_consumer_key, $oauth_consumer_secret, $oauth_token = null, $oauth_token_secret = null, $user_agent = null, $headers = null, $timezone = 'America/New_York', $debug = false )
 	{
-		parent::__construct($username, $password, $user_agent, $headers, $timezone);
+		parent::__construct($oauth_consumer_key, $oauth_consumer_secret, $oauth_token, $oauth_token_secret, $user_agent, $headers, $timezone, $debug);
 	}
 
-	
+	public function create_auth_link()
+	{
+		$this->api_url = 'http://twitter.com/oauth/request_token';
+	}
 	
 	/**
 	 * Destroys the object
