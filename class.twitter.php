@@ -3,47 +3,47 @@
 class Twitter {
 	
 	/**
-	 * Authenticating Twitter user
-	 * @var string
-	 */
-	public $username;
-	
-	/**
-	 * Autenticating Twitter user password
-	 * @var string
-	 */
-	public $password;
-	
-	/**
 	 * OAuth Consumer Key
 	 * @var string
 	 */
-	public $oauth_consumer_key;
+	protected $consumerKey;
 	
 	/**
 	 * OAuth Consumer Secret
 	 * @var string
 	 */
-	public $oauth_consumer_secret;
+	protected $consumerSecret;
 	
 	/**
-	 * OAuth Consumer Key
+	 * OAuth Token
 	 * @var string
 	 */
-	public $oauth_request_url;
+	protected $token;
 	
 	/**
-	 * OAuth Consumer Secret
+	 * OAuth Token Secret
 	 * @var string
 	 */
-	public $oauth_access_token_url;
+	protected $tokenSecret;
 	
 	/**
-	 * OAuth Consumer Secret
+	 * OAuth Request URL
 	 * @var string
 	 */
-	public $oauth_authorize_url;
+	protected $requestTokenUrl;
 	
+	/**
+	 * OAuth Access Token URL
+	 * @var string
+	 */
+	protected $accessTokenUrl;
+	
+	/**
+	 * OAuth Authorize URL
+	 * @var string
+	 */
+	protected $authorizeUrl;
+		
 	/**
 	 * Sets the URL to be used for the API requests
 	 * @var string
@@ -54,20 +54,20 @@ class Twitter {
 	 * Recommend setting a user-agent so Twitter knows how to contact you inc case of abuse. Include your email
 	 * @var string
 	 */
-	public $user_agent;
+	protected $userAgent;
 
 	/**
 	 * Can be set to JSON (requires PHP 5.2 or the json pecl module) or XML - json|xml
 	 * @var string
 	 */
-	public $type;
+	protected $type;
 
 	/**
 	 * It is unclear if Twitter header preferences are standardized, but I would suggest using them.
 	 * More discussion at http://tinyurl.com/3xtx66
 	 * @var array
 	 */
-	public $headers;
+	public $send_headers;
 	
 	/**
 	 * @var boolean
@@ -77,7 +77,7 @@ class Twitter {
 	/**
 	 * @var boolean
 	 */
-	 public $debug;
+	 protected $debug;
 	
 	/**
 	 * @var string
@@ -92,11 +92,11 @@ class Twitter {
 	 * @param string $username Twitter username
 	 * @param string $password Twitter password
 	 * @param string $user_agent Unique identifying user agent that identifies the App you're building. Include an email address that Twitter can use to reach you
-	 * @param array $headers Additional headers to be sent to Twitter as key/value pairs
+	 * @param array $send_headers Additional headers to be sent to Twitter as key/value pairs
 	 * @param string $timezone Formatted like America/New_York
 	 * @return Twitter
 	 */
-	public function __construct( $auth_type = 'basic', $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York' )
+	public function __construct( $consumerKey, $consumerSecret, $token = null, $tokenSecret = null, $user_agent = null, $send_headers = null, $timezone = 'America/New_York', $debug = false )
 	{		
 		// Don't load BackPress if the class is used inside WordPress
 		if( !class_exists('WP_Query') ) :
@@ -108,19 +108,30 @@ class Twitter {
 			require_once('inc/backpress/class.wp-error.php');
 		endif;
 		
-		/* Note: Basic Auth will be phased out of Twitter in June 2010; use OAuth instead */
-		if( $auth_type == 'basic' ) :
-			$this->username = $username;
-			$this->password = $password;
-		endif;
+		$this->consumenrKey = $consumerKey;
+		$this->consumerSecret = $consumerSecret;
+		$this->token = ( $token != null ) ? $token : '';
+		$this->tokenSecret = ( $tokenSecret != null ) ? $tokenSecret : '';
+
 		$this->api_url = '';
-		$this->user_agent = ( $user_agent ) ? $user_agent : 'php-twitter/1.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
-		$this->headers = ( $headers ) ? $headers : array('Authorization' => 'Basic '. base64_encode($username . ':' . $password),'Expect:' , 'X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
+		$this->userAgent = ( $userAgent ) ? $userAgent : 'php-twitter/2.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
+		$this->send_headers = ( $send_headers ) ? $send_headers : array('Expect:' , 'X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');
 		$this->debug = ( $debug ) ? true : false;
 		$this->suppress_response_code = false;
 		$this->type = 'json';
 		$this->timezone = date_default_timezone_set( $timezone );
 		$this->http = new WP_Http();
+		
+		if( $this->oauth_token == '' )
+		{
+			require_once('inc/class.oauth.php');
+			$oauth = new EpiTwitter( $this->consumerKey, $this->consumerSecret );
+			//$oauth->userAgent = $this->user_agent;
+			echo '<pre>';
+			$oauth->getAuthorizationUrl();
+			print_r($oauth);
+			echo '</pre>';
+		}
 	}
 	
 	/**
