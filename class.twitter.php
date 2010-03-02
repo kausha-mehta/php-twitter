@@ -96,7 +96,7 @@ class Twitter {
 	 * @param string $timezone Formatted like America/New_York
 	 * @return Twitter
 	 */
-	public function __construct( $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York' )
+	public function __construct( $auth_type = 'basic', $username = null, $password = null, $user_agent = null, $headers = null, $timezone = 'America/New_York' )
 	{		
 		// Don't load BackPress if the class is used inside WordPress
 		if( !class_exists('WP_Query') ) :
@@ -108,8 +108,11 @@ class Twitter {
 			require_once('inc/backpress/class.wp-error.php');
 		endif;
 		
-		$this->username = $username;
-		$this->password = $password;
+		/* Note: Basic Auth will be phased out of Twitter in June 2010; use OAuth instead */
+		if( $auth_type == 'basic' ) :
+			$this->username = $username;
+			$this->password = $password;
+		endif;
 		$this->api_url = '';
 		$this->user_agent = ( $user_agent ) ? $user_agent : 'php-twitter/1.x - To report abuse, contact ' . $_SERVER["SERVER_ADMIN"];
 		$this->headers = ( $headers ) ? $headers : array('Authorization' => 'Basic '. base64_encode($username . ':' . $password),'Expect:' , 'X-Twitter-Client: ','X-Twitter-Client-Version: ','X-Twitter-Client-URL: ');

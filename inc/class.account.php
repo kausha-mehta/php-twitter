@@ -7,7 +7,6 @@
  * @author Aaron Brazell
  **/
 
-require_once('../class.twitter.php');
 class Twitter_Account_Name extends Twitter {
 	/**
 	 * Setup Twitter client connection details
