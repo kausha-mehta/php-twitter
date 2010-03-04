@@ -108,7 +108,7 @@ class Twitter {
 			require_once('inc/backpress/class.wp-error.php');
 		endif;
 		
-		$this->consumenrKey = $consumerKey;
+		$this->consumerKey = $consumerKey;
 		$this->consumerSecret = $consumerSecret;
 		$this->token = ( $token != null ) ? $token : '';
 		$this->tokenSecret = ( $tokenSecret != null ) ? $tokenSecret : '';
